@@ -23,6 +23,7 @@ export default function Input1({
     if (setAllValues) {
       setAllValues((prev) => ({ ...prev, [name]: inputText }));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputText]);
 
   useEffect(() => {
