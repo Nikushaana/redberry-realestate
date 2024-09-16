@@ -131,7 +131,7 @@ export default function FilterDropDown({ text, placeholder, data1, data2 }) {
                     <p
                       key={item.id}
                       onClick={() => {
-                        setValue1(value1 == item.name ? "" : item.name);
+                        setValue1(value1 === item.name ? "" : item.name);
                       }}
                       className={`flex items-center w-full text-[14px] 
                         truncate cursor-pointer duration-100 select-none 
@@ -158,7 +158,7 @@ export default function FilterDropDown({ text, placeholder, data1, data2 }) {
                     <p
                       key={item.id}
                       onClick={() => {
-                        setValue2(value2 == item.name ? "" : item.name);
+                        setValue2(value2 === item.name ? "" : item.name);
                       }}
                       className={`flex items-center w-full text-[14px] 
                         truncate cursor-pointer duration select-none 

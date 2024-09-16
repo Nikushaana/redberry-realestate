@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import x from "../../images/xlg.png";
 import { ShareStatesCont } from "../contexts/sharedStates";
 

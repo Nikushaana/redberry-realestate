@@ -6,7 +6,7 @@ export function ShareStatesChild({ children }) {
   const [delListPopUp, setDelListPopUp] = useState(false);
   const [addAgentPopUp, setAddAgentPopUp] = useState(false);
 
-  const [priceData, setPriceData] = useState([
+  const priceData = ([
     {
       id: 1,
       name: "50000",
@@ -28,7 +28,7 @@ export function ShareStatesChild({ children }) {
       name: "300000",
     },
   ]);
-  const [m2Data, setM2Data] = useState([
+  const m2Data = ([
     {
       id: 1,
       name: "50",
