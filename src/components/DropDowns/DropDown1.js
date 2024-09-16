@@ -13,53 +13,53 @@ export default function DropDown1({
 
   const [value, setValue] = useState("");
 
-  const [data, setdata] = useState([
-    {
-      id: 1,
-      name: "giorga",
-    },
-    {
-      id: 2,
-      name: "giorga",
-    },
-    {
-      id: 3,
-      name: "giorga",
-    },
-    {
-      id: 4,
-      name: "giorga",
-    },
-    {
-      id: 5,
-      name: "giorga",
-    },
-    {
-      id: 6,
-      name: "giorga",
-    },
-    {
-      id: 7,
-      name: "giorga",
-    },
-    {
-      id: 8,
-      name: "giorga",
-    },
-    {
-      id: 9,
-      name: "giorga",
-    },
-    {
-      id: 10,
-      name: "giorga",
-    },
-    {
-      id: 11,
-      name: "giorga",
-    },
-  ]);
-
+  const data = ([
+      {
+        id: 1,
+        name: "giorga",
+      },
+      {
+        id: 2,
+        name: "giorga",
+      },
+      {
+        id: 3,
+        name: "giorga",
+      },
+      {
+        id: 4,
+        name: "giorga",
+      },
+      {
+        id: 5,
+        name: "giorga",
+      },
+      {
+        id: 6,
+        name: "giorga",
+      },
+      {
+        id: 7,
+        name: "giorga",
+      },
+      {
+        id: 8,
+        name: "giorga",
+      },
+      {
+        id: 9,
+        name: "giorga",
+      },
+      {
+        id: 10,
+        name: "giorga",
+      },
+      {
+        id: 11,
+        name: "giorga",
+      },
+    ]);
+    
   const handleClickOutside = (event) => {
     if (targetRef.current && !targetRef.current.contains(event.target)) {
       setDropDown(false);

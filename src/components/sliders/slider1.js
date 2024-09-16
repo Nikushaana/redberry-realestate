@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import React, { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
@@ -11,15 +11,14 @@ import PropertyCard from "../cards/PropertyCard";
 
 export default function Slider1({ title }) {
   let swiperRef = useRef();
-  const [loader, setLoader] = useState(false);
-  const [slidesPerView, setSlidesPerView] = useState(6);
+  // const [loader, setLoader] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-[20px]">
       <h1 className="text-[32px] text-defblack">{title}</h1>
 
       <div className="flex w-full gap-8">
-        {loader ? (
+        {false ? (
           <p>loader</p>
         ) : (
           <div className="w-full relative">

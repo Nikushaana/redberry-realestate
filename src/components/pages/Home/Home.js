@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import PropertyCard from "../../cards/PropertyCard";
 import FilterDropDown from "../../DropDowns/FilterDropDown";
 import pluss from "../../../images/ic_round-pluss.png";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 export default function Home() {
   const { priceData, m2Data, setAddAgentPopUp } = useContext(ShareStatesCont);
 
-  const [fltrValues, setFltrValues] = useState({
+  const fltrValues = ({
     cities: [
       { id: 1, name: "თბილისი" },
       { id: 2, name: "თელავი" },
@@ -19,6 +19,15 @@ export default function Home() {
     price: { from: "20000", to: "100000" },
     bedroom: "4",
   });
+  // const [fltrValues, setFltrValues] = useState({
+  //   cities: [
+  //     { id: 1, name: "თბილისი" },
+  //     { id: 2, name: "თელავი" },
+  //   ],
+  //   area: { from: "0", to: "100" },
+  //   price: { from: "20000", to: "100000" },
+  //   bedroom: "4",
+  // });
 
   return (
     <div className="px-[162px] py-[81px] flex flex-col gap-y-[30px]">
@@ -77,9 +86,9 @@ export default function Home() {
             ))}
           {(fltrValues.area.from !== "" || fltrValues.area.to !== "") && (
             <div className="rounded-[43px] flex items-center border-[1px] border-defaultBg py-[6px] px-[10px] gap-[4px]">
-              <p>{fltrValues.area.from == "" ? 0 : fltrValues.area.from}მ²</p>
+              <p>{fltrValues.area.from === "" ? 0 : fltrValues.area.from}მ²</p>
               <p>-</p>
-              <p>{fltrValues.area.to == "" ? "∞" : fltrValues.area.to}მ²</p>
+              <p>{fltrValues.area.to === "" ? "∞" : fltrValues.area.to}მ²</p>
               <img
                 className={`w-[14px] h-[14px] object-contain cursor-pointer`}
                 src={x}
@@ -89,9 +98,9 @@ export default function Home() {
           )}
           {(fltrValues.price.from !== "" || fltrValues.price.to !== "") && (
             <div className="rounded-[43px] flex items-center border-[1px] border-defaultBg py-[6px] px-[10px] gap-[4px]">
-              <p>{fltrValues.price.from == "" ? 0 : fltrValues.price.from}₾</p>
+              <p>{fltrValues.price.from === "" ? 0 : fltrValues.price.from}₾</p>
               <p>-</p>
-              <p>{fltrValues.price.to == "" ? "∞" : fltrValues.price.to}₾</p>
+              <p>{fltrValues.price.to === "" ? "∞" : fltrValues.price.to}₾</p>
               <img
                 className={`w-[14px] h-[14px] object-contain cursor-pointer`}
                 src={x}
