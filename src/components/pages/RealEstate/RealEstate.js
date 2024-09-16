@@ -15,8 +15,6 @@ import { ShareStatesCont } from "../../contexts/sharedStates";
 export default function RealEstate() {
   const { setDelListPopUp } = useContext(ShareStatesCont);
 
-  // const { RealEstateId } = useParams();
-
   return (
     <div className="px-[162px] pt-[81px] pb-[228px] flex flex-col gap-y-[60px]">
       <div className="flex flex-col gap-y-[30px]">
