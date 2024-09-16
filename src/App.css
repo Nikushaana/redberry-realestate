@@ -36,3 +36,34 @@
     transform: rotate(360deg);
   }
 }
+
+/* my css */
+
+@font-face {
+  font-family: boldfont;
+  src: url(././styles/fonts/FiraGO-SemiBold.otf);
+  
+}
+
+@font-face {
+  font-family: font;
+  src: url(././styles/fonts/FiraGO-Regular.otf);
+}
+
+p,
+a,
+::placeholder,
+ul li,
+button {
+  font-family: font;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  font-family: boldfont;
+}
