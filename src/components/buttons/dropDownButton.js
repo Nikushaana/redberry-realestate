@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import arrow from "../../images/arrow.png";
 
 export default function DropDownButton({ text, dropDown, setDropDown, style }) {

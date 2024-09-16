@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import arrow from "../../../images/Icon Right.png";
 import estateimg from "../../../images/Frame 103.png";
 import girlimg from "../../../images/Beautiful young woman looking serious.png";
@@ -8,7 +8,7 @@ import square from "../../../images/Vector (1).png";
 import direction from "../../../images/Vector (2).png";
 import phone from "../../../images/Vector (4).png";
 import envelope from "../../../images/Shape.png";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Slider1 from "../../sliders/slider1";
 import { ShareStatesCont } from "../../contexts/sharedStates";
 
