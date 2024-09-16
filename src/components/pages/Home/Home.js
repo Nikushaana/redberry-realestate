@@ -30,7 +30,7 @@ export default function Home() {
   // });
 
   return (
-    <div className="px-[162px] py-[81px] flex flex-col gap-y-[30px]">
+    <div className="px-[162px] py-[81px] flex flex-col gap-y-[30px] bg-[red]">
       <div className="flex flex-col gap-y-[20px]">
         <div className="flex items-center justify-between">
           <div className="h-[47px] rounded-[10px] border-[1px] border-defaultBg p-[6px] flex items-center gap-[24px]">
