@@ -14,7 +14,7 @@ export default function AddListing() {
     navigate("/");
   };
 
-  const [type, setType] = useState([
+  const type = ([
     {
       id: 1,
       name: "იყიდება",
@@ -38,25 +38,25 @@ export default function AddListing() {
     image: "",
     agent: "",
   });
-  const AddListing = () => {
-    if (
-      addListingValues.type &&
-      addListingValues.address &&
-      addListingValues.elIndex &&
-      addListingValues.region &&
-      addListingValues.city &&
-      addListingValues.price &&
-      addListingValues.area &&
-      addListingValues.bedroom &&
-      addListingValues.description &&
-      addListingValues.image &&
-      addListingValues.deagentscription
-    ) {
-      console.log("damateba");
-    } else {
-      console.log("araa");
-    }
-  };
+  // const AddListing = () => {
+  //   if (
+  //     addListingValues.type &&
+  //     addListingValues.address &&
+  //     addListingValues.elIndex &&
+  //     addListingValues.region &&
+  //     addListingValues.city &&
+  //     addListingValues.price &&
+  //     addListingValues.area &&
+  //     addListingValues.bedroom &&
+  //     addListingValues.description &&
+  //     addListingValues.image &&
+  //     addListingValues.deagentscription
+  //   ) {
+  //     console.log("damateba");
+  //   } else {
+  //     console.log("araa");
+  //   }
+  // };
 
   return (
     <div className="pt-[81px] pb-[228px] flex flex-col items-center">
