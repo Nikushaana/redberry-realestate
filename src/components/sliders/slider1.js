@@ -12,7 +12,7 @@ import PropertyCard from "../cards/PropertyCard";
 export default function Slider1({ title }) {
   let swiperRef = useRef();
   // const [loader, setLoader] = useState(false);
-
+   
   return (
     <div className="flex flex-col gap-y-[20px]">
       <h1 className="text-[32px] text-defblack">{title}</h1>

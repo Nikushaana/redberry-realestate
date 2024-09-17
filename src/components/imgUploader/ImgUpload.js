@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import trash from "../../images/trash-2.png";
 import pluscrcl from "../../images/plus-circle.png";
 
-export default function OneImgUploader({ inputName }) {
+export default function OneImgUploader({
+  inputName,
+  render,
+  name,
+  setAllValues,
+}) {
   const [photo, setPhoto] = useState(null);
 
   const removePhoto = () => {
@@ -11,13 +16,33 @@ export default function OneImgUploader({ inputName }) {
 
   const handleFileSelect = (e) => {
     const selectedFile = e.target.files[0];
+
     if (selectedFile) {
-      setPhoto(selectedFile);
+      if (selectedFile.size > 1048576) {
+        setPhoto(null);
+      } else {
+        setPhoto(selectedFile);
+      }
     }
   };
 
+  useEffect(() => {
+    if (setAllValues) {
+      setAllValues((prev) => ({ ...prev, [name]: photo }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [photo]);
+
+  useEffect(() => {
+    if (render) {
+      setPhoto(null);
+    }
+  }, [render]);
+
   return (
-    <div className={`w-full h-full border-[1px] border-[#2D3648] border-dashed rounded-[10px] flex items-center justify-center`}>
+    <div
+      className={`w-full h-full border-[1px] border-[#2D3648] border-dashed rounded-[8px] flex items-center justify-center`}
+    >
       {photo ? (
         <div className="relative w-[92px] h-[82px] bg-[#F0F5F7]">
           <img

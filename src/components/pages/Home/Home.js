@@ -1,24 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropertyCard from "../../cards/PropertyCard";
 import FilterDropDown from "../../DropDowns/FilterDropDown";
-import pluss from "../../../images/ic_round-pluss.png";
-import plus from "../../../images/ic_round-plus.png";
 import { ShareStatesCont } from "../../contexts/sharedStates";
 import x from "../../../images/x.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Button1 from "../../buttons/button1";
+import Button2 from "../../buttons/button2";
 
 export default function Home() {
-  const { priceData, m2Data, setAddAgentPopUp } = useContext(ShareStatesCont);
+  const { priceData, m2Data } = useContext(ShareStatesCont);
+  const { handleAddAgentPopUp } = useContext(ShareStatesCont);
 
-  const fltrValues = ({
-    cities: [
-      { id: 1, name: "თბილისი" },
-      { id: 2, name: "თელავი" },
-    ],
-    area: { from: "0", to: "100" },
-    price: { from: "20000", to: "100000" },
-    bedroom: "4",
-  });
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/add-listing");
+  };
+
+  // const fltrValues = ({
+  //   cities: [
+  //     { id: 1, name: "თბილისი" },
+  //     { id: 2, name: "თელავი" },
+  //   ],
+  //   area: { from: "0", to: "100" },
+  //   price: { from: "20000", to: "100000" },
+  //   bedroom: "4",
+  // });
   // const [fltrValues, setFltrValues] = useState({
   //   cities: [
   //     { id: 1, name: "თბილისი" },
@@ -34,44 +41,23 @@ export default function Home() {
       <div className="flex flex-col gap-y-[20px]">
         <div className="flex items-center justify-between">
           <div className="h-[47px] rounded-[10px] border-[1px] border-defaultBg p-[6px] flex items-center gap-[24px]">
-            <FilterDropDown text="რეგიონი" />
-            <FilterDropDown
+            {/* <FilterDropDown text="რეგიონი" /> */}
+            {/* <FilterDropDown
               text="საფასო კატეგორია"
               data1={priceData}
               data2={priceData}
             />
-            <FilterDropDown text="ფართობი" data1={m2Data} data2={m2Data} />
-            <FilterDropDown text="საძინებლის რაოდენობა" />
+            <FilterDropDown text="ფართობი" data1={m2Data} data2={m2Data} /> */}
+            {/* <FilterDropDown text="საძინებლის რაოდენობა" /> */}
           </div>
           <div className="flex items-center gap-[16px]">
-            <Link to={"/add-listing"}
-              className={`flex items-center justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] bg-defOrng active:bg-defOrngHvr text-white`}
-            >
-              <img
-                className="w-[22px] h-[22px] object-contain"
-                src={pluss}
-                alt="img"
-              />
-              <p>ლისტინგის დამატება</p>
-            </Link>
-            <div
-              onClick={() => {
-                setAddAgentPopUp(true);
-              }}
-              className={`flex items-center justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] border-[1px] border-defOrng text-defOrng`}
-            >
-              <img
-                className="w-[22px] h-[22px] object-contain"
-                src={plus}
-                alt="img"
-              />
-              <p>აგენტის დამატება</p>
-            </div>
+            <Button1 text="ლისტინგის დამატება" setAction={handleClick} />
+            <Button2 text="აგენტის დამატება" setAction={handleAddAgentPopUp} />
           </div>
         </div>
-        <div className="flex items-center gap-[16px]">
-          {fltrValues.cities.length > 0 &&
-            fltrValues.cities.map((item) => (
+        {/* <div className="flex items-center gap-[16px]">
+          {mainFilterValues.cities.length > 0 &&
+            mainFilterValues.cities.map((item) => (
               <div
                 key={item.id}
                 className="rounded-[43px] flex items-center border-[1px] border-defaultBg py-[6px] px-[10px] gap-[4px]"
@@ -84,11 +70,11 @@ export default function Home() {
                 />
               </div>
             ))}
-          {(fltrValues.area.from !== "" || fltrValues.area.to !== "") && (
+          {(mainFilterValues.areaFrom !== "" || mainFilterValues.areaTo !== "") && (
             <div className="rounded-[43px] flex items-center border-[1px] border-defaultBg py-[6px] px-[10px] gap-[4px]">
-              <p>{fltrValues.area.from === "" ? 0 : fltrValues.area.from}მ²</p>
+              <p>{mainFilterValues.areaFrom === "" ? 0 : mainFilterValues.areaFrom}მ²</p>
               <p>-</p>
-              <p>{fltrValues.area.to === "" ? "∞" : fltrValues.area.to}მ²</p>
+              <p>{mainFilterValues.areaTo === "" ? "∞" : mainFilterValues.areaTo}მ²</p>
               <img
                 className={`w-[14px] h-[14px] object-contain cursor-pointer`}
                 src={x}
@@ -96,11 +82,11 @@ export default function Home() {
               />
             </div>
           )}
-          {(fltrValues.price.from !== "" || fltrValues.price.to !== "") && (
+          {(mainFilterValues.priceFrom !== "" || mainFilterValues.priceTo !== "") && (
             <div className="rounded-[43px] flex items-center border-[1px] border-defaultBg py-[6px] px-[10px] gap-[4px]">
-              <p>{fltrValues.price.from === "" ? 0 : fltrValues.price.from}₾</p>
+              <p>{mainFilterValues.priceFrom === "" ? 0 : mainFilterValues.priceFrom}₾</p>
               <p>-</p>
-              <p>{fltrValues.price.to === "" ? "∞" : fltrValues.price.to}₾</p>
+              <p>{mainFilterValues.priceTo === "" ? "∞" : mainFilterValues.priceTo}₾</p>
               <img
                 className={`w-[14px] h-[14px] object-contain cursor-pointer`}
                 src={x}
@@ -108,9 +94,9 @@ export default function Home() {
               />
             </div>
           )}
-          {fltrValues.bedroom !== "" && (
+          {mainFilterValues.bedroom !== "" && (
             <div className="rounded-[43px] flex items-center border-[1px] border-defaultBg py-[6px] px-[10px] gap-[4px]">
-              <p>{fltrValues.bedroom}</p>
+              <p>{mainFilterValues.bedroom}</p>
               <img
                 className={`w-[14px] h-[14px] object-contain cursor-pointer`}
                 src={x}
@@ -118,18 +104,18 @@ export default function Home() {
               />
             </div>
           )}
-          {(fltrValues.cities.length > 0 ||
-            fltrValues.area.from !== "" ||
-            fltrValues.area.to !== "" ||
-            fltrValues.price.from !== "" ||
-            fltrValues.price.to !== "" ||
-            fltrValues.bedroom !== "") && (
+          {(mainFilterValues.cities.length > 0 ||
+            mainFilterValues.areaFrom !== "" ||
+            mainFilterValues.areaTo !== "" ||
+            mainFilterValues.priceFrom !== "" ||
+            mainFilterValues.priceTo !== "" ||
+            mainFilterValues.bedroom !== "") && (
             <h1 className="text-[14px] cursor-pointer">გასუფთავება</h1>
           )}
-        </div>
+        </div> */}
       </div>
       <div>
-        {false ? (
+        {true ? (
           <div className="grid grid-cols-4 gap-[20px] w-full">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
               <PropertyCard />

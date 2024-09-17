@@ -11,16 +11,14 @@ function App() {
   return (
     <div className="min-h-[100vh] bg-white">
       <Header />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/real-estate/:RealEstateId" element={<RealEstate />} />
-          <Route path="add-listing" element={<AddListing />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/real-estate/:RealEstateId" element={<RealEstate />} />
+        <Route path="add-listing" element={<AddListing />} />
+      </Routes>
 
-      <DeleteListingPopUp/>
-      <AddAgentPopUp/>
+      <DeleteListingPopUp />
+      <AddAgentPopUp />
     </div>
   );
 }

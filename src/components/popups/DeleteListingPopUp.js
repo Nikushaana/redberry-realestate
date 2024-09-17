@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import x from "../../images/xlg.png";
 import { ShareStatesCont } from "../contexts/sharedStates";
+import Button1 from "../buttons/button1";
+import Button2 from "../buttons/button2";
 
 export default function DeleteListingPopUp() {
-  const { delListPopUp, setDelListPopUp } = useContext(ShareStatesCont);
+  const { delListPopUp, handleDelListPopUp } = useContext(ShareStatesCont);
 
   return (
     <div
@@ -15,7 +17,7 @@ export default function DeleteListingPopUp() {
       <div className={`px-[180px] py-[60px] bg-white rounded-[20px] relative`}>
         <div
           onClick={() => {
-            setDelListPopUp(false);
+            handleDelListPopUp();
           }}
           className="absolute top-[6px] right-[10px] w-[47px] h-[47px] flex items-center justify-center cursor-pointer"
         >
@@ -23,25 +25,21 @@ export default function DeleteListingPopUp() {
         </div>
 
         <div
-          className={`flex flex-col items-center gap-y-[30px] ${
-            false && "pointer-events-none"
-          }`}
+          className={`flex flex-col items-center gap-y-[30px] ${false &&
+            "pointer-events-none"}`}
         >
           <p className="text-[20px]">გსურთ წაშალოთ ლისტინგი?</p>
           <div className="flex items-center gap-[16px]">
-            <div
-              onClick={() => {
-                setDelListPopUp(false);
-              }}
-              className={`flex items-center justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] border-[1px] border-defOrng text-defOrng`}
-            >
-              <p>გაუქმება</p>
-            </div>
-            <div
-              className={`flex items-center justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] bg-defOrng active:bg-defOrngHvr text-white`}
-            >
-              <p>დადასტურება</p>
-            </div>
+            <Button2
+              text="გაუქმება"
+              setAction={handleDelListPopUp}
+              icon={false}
+            />
+            <Button1
+              text="დადასტურება"
+              setAction={""}
+              icon={false}
+            />
           </div>
         </div>
       </div>

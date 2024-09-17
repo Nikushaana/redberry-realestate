@@ -67,3 +67,14 @@ h6
 {
   font-family: boldfont;
 }
+
+.showyScroll::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track { 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #F93B1D; 
+  border-radius: 10px;
+}
