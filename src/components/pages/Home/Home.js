@@ -1,14 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import PropertyCard from "../../cards/PropertyCard";
-import FilterDropDown from "../../DropDowns/FilterDropDown";
 import { ShareStatesCont } from "../../contexts/sharedStates";
-import x from "../../../images/x.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button1 from "../../buttons/button1";
 import Button2 from "../../buttons/button2";
 
 export default function Home() {
-  const { priceData, m2Data } = useContext(ShareStatesCont);
   const { handleAddAgentPopUp } = useContext(ShareStatesCont);
 
   const navigate = useNavigate();

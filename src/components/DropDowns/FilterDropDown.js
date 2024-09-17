@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DropDownButton from "../buttons/dropDownButton";
-import check from "../../images/Vector (3).png";
-import Button3 from "../buttons/button3";
-import { ShareStatesCont } from "../contexts/sharedStates";
 
 export default function FilterDropDown({ text, data1, data2 }) {
   const targetRef = useRef(null);

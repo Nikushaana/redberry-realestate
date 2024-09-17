@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import x from "../../images/xlg.png";
 import { ShareStatesCont } from "../contexts/sharedStates";
 import Input1 from "../inputs/Input1";
 import OneImgUploader from "../imgUploader/ImgUpload";
