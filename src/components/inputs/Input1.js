@@ -15,7 +15,7 @@ export default function Input1({
   lastIcon,
   height,
   isError,
-  showUnderText,
+  underText,
 }) {
   const [inputText, setInputText] = useState();
 
@@ -23,7 +23,7 @@ export default function Input1({
     if (setAllValues) {
       setAllValues((prev) => ({ ...prev, [name]: inputText }));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputText]);
 
   useEffect(() => {
@@ -56,13 +56,13 @@ export default function Input1({
   };
 
   return (
-    <div className="flex flex-col gap-y-[4px] ">
-      {title && <h1 className="text-[14px]">{title}</h1>}
+    <div className="flex flex-col gap-y-[5px] ">
+      {title && <h1 className="text-[14px] text-defblack">{title}</h1>}
       <div
-        className={`rounded-[6px] w-full border-[1px] outline-none p-[10px] flex items-center
+        className={`rounded-[6px] w-full border-[1px] outline-none px-[10px] flex items-center
          gap-[10px] duration-100 ${height} ${
-           isError ? " border-defOrng" : " border-defGray"
-         }`}
+          isError ? " border-defOrng" : " border-defGray"
+        }`}
       >
         <input
           onChange={handleInputChange}
@@ -70,26 +70,32 @@ export default function Input1({
           type="text"
           name={name}
           placeholder={placeholder}
-          className={`select-none outline-none h-[90%] w-full bg-transparent`}
+          className={`select-none outline-none h-[95%] w-full `}
         />
         {lastIcon && lastIcon}
       </div>
-      {showUnderText && (
-        <div
-          className={`flex items-center gap-[7px] ${
-            inputText ? isError ? "text-defOrng" : "text-defGreen" : "text-defblack"
-          }`}
-        >
-          <img className={``} src={inputText ? isError ? checkred : checkgreen : checkdef} alt="ing" />{" "}
-          <p className={`text-[14px]`}>
-            {inputText
-              ? isError
-                ? "ჩაწერეთ ვალიდური მონაცემი"
-                : showUnderText
-              : showUnderText}
-          </p>
-        </div>
-      )}
+      <div
+        className={`flex items-center gap-[7px] ${
+          inputText
+            ? isError
+              ? "text-defOrng"
+              : "text-defGreen"
+            : "text-defblack"
+        }`}
+      >
+        <img
+          className={``}
+          src={inputText ? (isError ? checkred : checkgreen) : checkdef}
+          alt="ing"
+        />{" "}
+        <p className={`text-[14px]`}>
+          {inputText
+            ? isError
+              ? "ჩაწერეთ ვალიდური მონაცემი"
+              : underText
+            : underText}
+        </p>
+      </div>
     </div>
   );
 }

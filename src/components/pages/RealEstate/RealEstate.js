@@ -11,9 +11,10 @@ import envelope from "../../../images/Shape.png";
 import { Link } from "react-router-dom";
 import Slider1 from "../../sliders/slider1";
 import { ShareStatesCont } from "../../contexts/sharedStates";
+import Button4 from "../../buttons/button4";
 
 export default function RealEstate() {
-  const { setDelListPopUp } = useContext(ShareStatesCont);
+  const { handleDelListPopUp } = useContext(ShareStatesCont);
 
   return (
     <div className="px-[162px] pt-[81px] pb-[228px] flex flex-col gap-y-[60px]">
@@ -29,7 +30,7 @@ export default function RealEstate() {
           />
         </Link>
         <div className="flex gap-[68px]">
-          <div className="w-[60%] flex flex-col gap-y-[10px]">
+          <div className="w-[839px] flex flex-col gap-y-[10px]">
             <div className="w-full h-[670px] relative ">
               <img
                 className="w-full h-full object-cover"
@@ -45,26 +46,26 @@ export default function RealEstate() {
             </p>
           </div>
 
-          <div className="pt-[30px] flex flex-col gap-y-[24px] w-[calc(100%-60%-68px)] max-w-[503px]">
-            <h1 className="text-[48px]">80 000 ₾</h1>
+          <div className="pt-[30px] flex flex-col gap-y-[24px] w-[calc(100%-839px)] max-w-[503px]">
+            <h1 className="text-[48px] text-defblack">80 000 ₾</h1>
             <div className="flex flex-col gap-y-[16px]">
               <div className="flex items-center gap-[4px]">
                 <img className="w-[22px] h-[22px]" src={location} alt="img" />
-                <p className="text-defGray text-[20px]">
+                <p className="text-defGray text-[24px]">
                   თბილისი, ი.ჭავჭავაძის 53
                 </p>
               </div>
               <div className="flex items-center gap-[4px]">
                 <img className="w-[22px] h-[22px]" src={square} alt="img" />
-                <p className="text-defGray text-[20px]">ფართი 55 მ²</p>
+                <p className="text-defGray text-[24px]">ფართი 55 მ²</p>
               </div>
               <div className="flex items-center gap-[4px]">
                 <img className="w-[22px] h-[22px]" src={bed} alt="img" />
-                <p className="text-defGray text-[20px]">საძინებელი 2</p>
+                <p className="text-defGray text-[24px]">საძინებელი 2</p>
               </div>
               <div className="flex items-center gap-[4px]">
                 <img className="w-[22px] h-[22px]" src={direction} alt="img" />
-                <p className="text-defGray text-[20px]">საფოსტო ინდექსი 2525</p>
+                <p className="text-defGray text-[24px]">საფოსტო ინდექსი 2525</p>
               </div>
             </div>
 
@@ -87,22 +88,18 @@ export default function RealEstate() {
               <div>
                 <div className="flex items-center gap-[5px]">
                   <img className="w-[16px] h-[13px]" src={envelope} alt="img" />
-                  <p className="text-defGray">sophio.gelovani@redberry.ge</p>
+                  <p className="text-defGray text-[14px]">
+                    sophio.gelovani@redberry.ge
+                  </p>
                 </div>
                 <div className="flex items-center gap-[5px]">
-                  <img className="w-[16px] h-[13px]" src={phone} alt="img" />
-                  <p className="text-defGray">577 777 777</p>
+                  <img className="w-[13px] h-[13px]" src={phone} alt="img" />
+                  <p className="text-defGray text-[14px]">577 777 777</p>
                 </div>
               </div>
             </div>
-            <div
-              onClick={() => {
-                setDelListPopUp(true);
-              }}
-              className={`flex items-center self-start justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] border-[1px] border-[#676E76] text-[#676E76]`}
-            >
-              <p>ლისტინგის წაშლა</p>
-            </div>
+
+            <Button4 setActiaon={handleDelListPopUp} />
           </div>
         </div>
       </div>

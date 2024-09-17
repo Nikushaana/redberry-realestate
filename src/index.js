@@ -4,12 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ShareStatesChild } from "./components/contexts/sharedStates";
+import { BrowserRouter as Router } from "react-router-dom";
+import EstateContext from "./components/contexts/EstateAxios";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ShareStatesChild>
-      <App />
+      <Router>
+        <EstateContext>
+          <App />
+        </EstateContext>
+      </Router>
     </ShareStatesChild>
   </React.StrictMode>
 );
