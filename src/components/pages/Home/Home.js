@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropertyCard from "../../cards/PropertyCard";
 import { ShareStatesCont } from "../../contexts/sharedStates";
 import Button1 from "../../buttons/button1";
@@ -6,9 +6,14 @@ import Button2 from "../../buttons/button2";
 import { useNavigate } from "react-router-dom";
 import x from "../../../images/x.png";
 import FilterDropDown from "../../DropDowns/FilterDropDown";
+import { RealEstateAxiosContext } from "../../contexts/realEstateCont";
+import CustLoader from "../../custLoader/CustLoader";
 
 export default function Home() {
   const { handleAddAgentPopUp } = useContext(ShareStatesCont);
+  const { RealEstateData, RealEstateLoader } = useContext(
+    RealEstateAxiosContext
+  );
 
   const navigate = useNavigate();
 
@@ -16,7 +21,9 @@ export default function Home() {
     navigate("/add-listing");
   };
 
-  const cities = ([
+  const [filteredHouses, setFilteredHouses] = useState(RealEstateData);
+
+  const cities = [
     {
       id: 1,
       name: "თელავი",
@@ -25,28 +32,36 @@ export default function Home() {
       id: 2,
       name: "თბილისი",
     },
-  ]);
+  ];
 
-  const area = ({
+  const area = {
     from: "50",
     to: "150",
-  });
-  const price = ({
+  };
+  const price = {
     from: "50000",
     to: "150000",
-  });
+  };
 
-  const bedroom = ("4");
+  const bedroom = "4";
 
   return (
     <div className="px-[162px] py-[81px] flex flex-col gap-y-[30px]">
       <div className="flex flex-col gap-y-[20px]">
         <div className="flex items-center justify-between">
           <div className="h-[47px] rounded-[10px] border-[1px] border-defaultBg p-[6px] flex items-center gap-[24px]">
-            <FilterDropDown text="რეგიონი" />
-            <FilterDropDown text="საფასო კატეგორია" />
-            <FilterDropDown text="ფართობი" />
-            <FilterDropDown text="საძინებლის რაოდენობა" />
+            <FilterDropDown
+              text="რეგიონი"
+            />
+            <FilterDropDown
+              text="საფასო კატეგორია"
+            />
+            <FilterDropDown
+              text="ფართობი"
+            />
+            <FilterDropDown
+              text="საძინებლის რაოდენობა"
+            />
           </div>
           <div className="flex items-center gap-[16px]">
             <Button1 text="ლისტინგის დამატება" setAction={handleClick} />
@@ -119,15 +134,27 @@ export default function Home() {
         </div>
       </div>
       <div>
-        {true ? (
-          <div className="grid grid-cols-4 gap-[20px] w-full">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-              <PropertyCard />
-            ))}
+        {RealEstateLoader ? (
+          <div className="flex items-center w-[100%] h-[50px] rounded-[10px] text-defOrng justify-center pointer-events-none border-[1px] duration-200">
+            <div className="w-[40px] h-[40px] flex items-center justify-center">
+              <CustLoader />
+            </div>
           </div>
+        ) : RealEstateData.length > 0 ? (
+          filteredHouses.length > 0 ? (
+            <div className="grid grid-cols-4 gap-[20px] w-full">
+              {filteredHouses.map((item) => (
+                <PropertyCard key={item.id} item={item} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-[20px] text-[#021526CC] mt-[20px]">
+              აღნიშნული მონაცემებით განცხადება არ იძებნება
+            </p>
+          )
         ) : (
           <p className="text-[20px] text-[#021526CC] mt-[20px]">
-            აღნიშნული მონაცემებით განცხადება არ იძებნება
+            განცხადებები არ არის დამატებული
           </p>
         )}
       </div>

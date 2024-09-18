@@ -8,10 +8,7 @@ export default function RegionDrop({ setallFilterValue }) {
   const [toggledcities, settoggledcities] = useState([]);
 
   useEffect(() => {
-    setallFilterValue((prev) => ({
-      ...prev,
-      cities: toggledcities,
-    }));
+    setallFilterValue(toggledcities);
   }, [setallFilterValue, toggledcities]);
 
   const handleToggleCity = (cityItem) => {
