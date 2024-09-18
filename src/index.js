@@ -4,18 +4,22 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ShareStatesChild } from "./components/contexts/sharedStates";
-import { BrowserRouter as Router } from "react-router-dom";
-import EstateContext from "./components/contexts/EstateAxios";
+import RegionsContext from "./components/contexts/regionsCont";
+import CitiesContext from "./components/contexts/citiesCont";
+import AgentsContext from "./components/contexts/agentsCont";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <ShareStatesChild>
-      <Router>
-        <EstateContext>
-          <App />
-        </EstateContext>
-      </Router>
+      <RegionsContext>
+        <CitiesContext>
+          <AgentsContext>
+            <App />
+          </AgentsContext>
+        </CitiesContext>
+      </RegionsContext>
     </ShareStatesChild>
   </React.StrictMode>
 );

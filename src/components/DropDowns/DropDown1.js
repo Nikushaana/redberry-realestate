@@ -10,6 +10,7 @@ export default function DropDown1({
   name,
   setAllValues,
   addagent,
+  data,
 }) {
   const { setAddAgentPopUp } = useContext(ShareStatesCont);
   const targetRef = useRef();
@@ -33,25 +34,6 @@ export default function DropDown1({
       setValue("");
     }
   }, [render]);
-
-  const data = [
-    {
-      id: 1,
-      name: "giorga",
-    },
-    {
-      id: 2,
-      name: "giorga",
-    },
-    {
-      id: 3,
-      name: "giorga",
-    },
-    {
-      id: 4,
-      name: "giorga",
-    },
-  ];
 
   const handleClickOutside = (event) => {
     if (targetRef.current && !targetRef.current.contains(event.target)) {
@@ -86,14 +68,16 @@ export default function DropDown1({
                 ? addagent
                   ? data?.length > 3
                     ? 168
-                    : data?.length * 42 + 42
+                    : data
+                    ? data?.length * 42 + 42
+                    : 42
                   : data?.length > 4
                   ? 168
                   : data?.length * 42
                 : 0
             }px`,
           }}
-          className={`border-[1px] w-full  border-defGray border-t-0 rounded-b-[6px] top-[42px] bg-white absolute  left-0 duration-200 flex flex-col ${
+          className={`border-[1px] w-full  border-defGray border-t-0 rounded-b-[6px] top-[42px] bg-white absolute left-0 duration-200 flex flex-col ${
             dropDown ? "opacity-1 z-[2] " : "opacity-0 z-[-2]"
           } ${
             addagent
@@ -106,8 +90,8 @@ export default function DropDown1({
               onClick={() => {
                 setAddAgentPopUp(true);
               }}
-              className={`min-h-[42px] h-[42px] cursor-pointer flex items-center gap-[8px] px-[14px]  border-defGray 
-                border-b-[1px]
+              className={`min-h-[42px] h-[42px] cursor-pointer flex items-center gap-[8px] px-[14px]  border-defGray ${data ? "border-b-[1px]" : "border-b-0"}
+                
               `}
             >
               <img
@@ -118,9 +102,9 @@ export default function DropDown1({
               <p>დაამატე აგენტი</p>
             </div>
           )}
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <div
-              key={item}
+              key={item.id}
               onClick={() => setValue(item.name)}
               className={`min-h-[42px] h-[42px] flex items-center px-[14px]  border-defGray cursor-pointer ${
                 data.length === index + 1 ? "" : "border-b-[1px]"

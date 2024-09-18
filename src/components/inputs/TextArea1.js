@@ -12,7 +12,6 @@ export default function TextArea1({
   setAllValues,
   isNumber,
   digit,
-  lastIcon,
   height,
   isError,
   showUnderText,

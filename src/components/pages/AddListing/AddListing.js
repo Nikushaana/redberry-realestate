@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Input1 from "../../inputs/Input1";
 import OneImgUploader from "../../imgUploader/ImgUpload";
 import TextArea1 from "../../inputs/TextArea1";
 import DropDown1 from "../../DropDowns/DropDown1";
-import { useNavigate } from "react-router-dom";
 import Button1 from "../../buttons/button1";
 import Button2 from "../../buttons/button2";
+import { useNavigate } from "react-router-dom";
+import { RegionsAxiosContext } from "../../contexts/regionsCont";
+import { CitiesAxiosContext } from "../../contexts/citiesCont";
+import { AgentsAxiosContext } from "../../contexts/agentsCont";
 
 export default function AddListing() {
+  const { RegionsData } = useContext(RegionsAxiosContext);
+  const { CitiesData } = useContext(CitiesAxiosContext);
+  const { AgentsData } = useContext(AgentsAxiosContext);
+
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/");
   };
 
-  const [type, setType] = useState([
+  const type = ([
     {
       id: 1,
       name: "იყიდება",
@@ -38,25 +45,25 @@ export default function AddListing() {
     image: "",
     agent: "",
   });
-  const AddListing = () => {
-    if (
-      addListingValues.type &&
-      addListingValues.address &&
-      addListingValues.elIndex &&
-      addListingValues.region &&
-      addListingValues.city &&
-      addListingValues.price &&
-      addListingValues.area &&
-      addListingValues.bedroom &&
-      addListingValues.description &&
-      addListingValues.image &&
-      addListingValues.deagentscription
-    ) {
-      console.log("damateba");
-    } else {
-      console.log("araa");
-    }
-  };
+  // const AddListing = () => {
+  //   if (
+  //     addListingValues.type &&
+  //     addListingValues.address &&
+  //     addListingValues.elIndex &&
+  //     addListingValues.region &&
+  //     addListingValues.city &&
+  //     addListingValues.price &&
+  //     addListingValues.area &&
+  //     addListingValues.bedroom &&
+  //     addListingValues.description &&
+  //     addListingValues.image &&
+  //     addListingValues.deagentscription
+  //   ) {
+  //     console.log("damateba");
+  //   } else {
+  //     console.log("araa");
+  //   }
+  // };
 
   return (
     <div className="pt-[81px] pb-[228px] flex flex-col items-center">
@@ -121,14 +128,25 @@ export default function AddListing() {
               title="რეგიონი"
               addagent={false}
               name="region"
+              data={RegionsData}
               setAllValues={setAddListingValues}
             />
-            <DropDown1
-              title="ქალაქი"
-              addagent={false}
-              name="city"
-              setAllValues={setAddListingValues}
-            />
+            {addListingValues.region && (
+              <DropDown1
+                title="ქალაქი"
+                data={CitiesData.filter(
+                  (item) =>
+                    item.region_id ===
+                    RegionsData.find(
+                      (item) => item.name === addListingValues.region
+                    )?.id
+                )}
+                addagent={false}
+                render={addListingValues.region}
+                name="city"
+                setAllValues={setAddListingValues}
+              />
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-[22px] w-full">
@@ -199,6 +217,7 @@ export default function AddListing() {
               title="აირჩიე"
               addagent={true}
               name="agent"
+              data={AgentsData}
               setAllValues={setAddListingValues}
             />
           </div>
