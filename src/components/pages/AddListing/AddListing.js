@@ -9,11 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { RegionsAxiosContext } from "../../contexts/regionsCont";
 import { CitiesAxiosContext } from "../../contexts/citiesCont";
 import { AgentsAxiosContext } from "../../contexts/agentsCont";
+import { axiosUser } from "../../contexts/Axios/Axios";
+import { RealEstateAxiosContext } from "../../contexts/realEstateCont";
 
 export default function AddListing() {
   const { RegionsData } = useContext(RegionsAxiosContext);
   const { CitiesData } = useContext(CitiesAxiosContext);
   const { AgentsData } = useContext(AgentsAxiosContext);
+  const { setNewRenderRealEstate } = useContext(RealEstateAxiosContext);
 
   const navigate = useNavigate();
 
@@ -21,53 +24,104 @@ export default function AddListing() {
     navigate("/");
   };
 
-  const type = ([
+  const type = [
     {
-      id: 1,
+      id: 2,
       name: "იყიდება",
     },
     {
-      id: 2,
+      id: 1,
       name: "ქირავდება",
     },
-  ]);
+  ];
+
+  const [addListingLoader, setAddListingLoader] = useState(false);
 
   const [addListingValues, setAddListingValues] = useState({
-    type: "იყიდება",
+    is_rental: "იყიდება",
     address: "",
-    elIndex: "",
-    region: "",
-    city: "",
+    zip_code: "",
+    region_id: "",
+    city_id: "",
     price: "",
     area: "",
-    bedroom: "",
+    bedrooms: "",
     description: "",
     image: "",
-    agent: "",
+    agent_id: "",
   });
-  // const AddListing = () => {
-  //   if (
-  //     addListingValues.type &&
-  //     addListingValues.address &&
-  //     addListingValues.elIndex &&
-  //     addListingValues.region &&
-  //     addListingValues.city &&
-  //     addListingValues.price &&
-  //     addListingValues.area &&
-  //     addListingValues.bedroom &&
-  //     addListingValues.description &&
-  //     addListingValues.image &&
-  //     addListingValues.deagentscription
-  //   ) {
-  //     console.log("damateba");
-  //   } else {
-  //     console.log("araa");
-  //   }
-  // };
+
+  const AddListing = async (e) => {
+    setAddListingLoader(true);
+    if (
+      addListingValues.is_rental &&
+      addListingValues.address?.length >= 2 &&
+      /^\d*$/.test(addListingValues.zip_code) &&
+      addListingValues.region_id &&
+      addListingValues.city_id &&
+      /^\d*$/.test(addListingValues.price) &&
+      /^\d*$/.test(addListingValues.area) &&
+      /^\d+$/.test(addListingValues.bedrooms) &&
+      addListingValues.description.split(" ").length >= 5 &&
+      addListingValues.image &&
+      addListingValues.agent_id
+    ) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append(
+        "is_rental",
+        parseInt(
+          type.find((item) => item.name === addListingValues.is_rental)?.id - 1
+        )
+      );
+      formData.append("address", addListingValues.address);
+      formData.append("zip_code", addListingValues.zip_code);
+      formData.append(
+        "region_id",
+        parseInt(
+          RegionsData.find((item) => item.name === addListingValues.region_id)
+            ?.id
+        )
+      );
+      formData.append(
+        "city_id",
+        parseInt(
+          CitiesData.find((item) => item.name === addListingValues.city_id)?.id
+        )
+      );
+      formData.append("price", addListingValues.price);
+      formData.append("area", addListingValues.area);
+      formData.append("bedrooms", addListingValues.bedrooms);
+      formData.append("description", addListingValues.description);
+      formData.append("image", addListingValues.image);
+      formData.append(
+        "agent_id",
+        parseInt(
+          AgentsData.find((item) => item.name === addListingValues.agent_id)?.id
+        )
+      );
+
+      axiosUser
+        .post("real-estates", formData)
+        .then((res) => {
+          handleClick();
+          setNewRenderRealEstate(res);
+        })
+        .catch((error) => {})
+        .finally(() => {
+          setAddListingLoader(false);
+        });
+    } else {
+      setAddListingLoader(false);
+    }
+  };
 
   return (
     <div className="pt-[81px] pb-[228px] flex flex-col items-center">
-      <div className="w-[790px] flex flex-col gap-y-[80px] items-center ">
+      <form
+        onSubmit={AddListing}
+        className="w-[790px] flex flex-col gap-y-[80px] items-center "
+      >
         <h1 className="text-[32px]">ლისტინგის დამატება</h1>
         <div className="flex flex-col gap-[32px] w-full">
           <h1 className="text-[#1A1A1F]">გარიგების ტიპი</h1>
@@ -78,7 +132,7 @@ export default function AddListing() {
                 onClick={() => {
                   setAddListingValues((prev) => ({
                     ...prev,
-                    type: item.name,
+                    is_rental: item.name,
                   }));
                 }}
                 className="flex items-center gap-[10px] cursor-pointer"
@@ -86,7 +140,9 @@ export default function AddListing() {
                 <div className="w-[17px] h-[17px] rounded-full flex items-center justify-center border-[1px] border-defblack">
                   <div
                     className={`w-[7px] h-[7px] rounded-full duration-100 ${
-                      addListingValues.type === item.name ? "bg-defblack" : ""
+                      addListingValues.is_rental === item.name
+                        ? "bg-defblack"
+                        : ""
                     }`}
                   ></div>
                 </div>
@@ -113,37 +169,37 @@ export default function AddListing() {
             <Input1
               underText="მხოლოდ რიცხვები"
               isError={
-                addListingValues.elIndex && addListingValues.elIndex.length < 2
+                addListingValues.zip_code &&
+                !/^\d*$/.test(addListingValues.zip_code)
                   ? true
                   : false
               }
-              digit={true}
               title="საფოსტო ინდექსი *"
               height="h-[42px]"
-              name="elIndex"
+              name="zip_code"
               setAllValues={setAddListingValues}
             />
 
             <DropDown1
               title="რეგიონი"
               addagent={false}
-              name="region"
+              name="region_id"
               data={RegionsData}
               setAllValues={setAddListingValues}
             />
-            {addListingValues.region && (
+            {addListingValues.region_id && (
               <DropDown1
                 title="ქალაქი"
                 data={CitiesData.filter(
                   (item) =>
                     item.region_id ===
                     RegionsData.find(
-                      (item) => item.name === addListingValues.region
+                      (item) => item.name === addListingValues.region_id
                     )?.id
                 )}
                 addagent={false}
-                render={addListingValues.region}
-                name="city"
+                render={addListingValues.region_id}
+                name="city_id"
                 setAllValues={setAddListingValues}
               />
             )}
@@ -155,33 +211,40 @@ export default function AddListing() {
             <div className="grid grid-cols-2 gap-[20px] w-full">
               <Input1
                 underText="მხოლოდ რიცხვები"
-                digit={true}
                 title="ფასი"
+                isError={
+                  addListingValues.price &&
+                  !/^\d*$/.test(addListingValues.price)
+                    ? true
+                    : false
+                }
                 height="h-[42px]"
                 name="price"
                 setAllValues={setAddListingValues}
               />
               <Input1
                 underText="მხოლოდ რიცხვები"
-                digit={true}
                 title="ფართობი"
+                isError={
+                  addListingValues.area && !/^\d*$/.test(addListingValues.area)
+                    ? true
+                    : false
+                }
                 height="h-[42px]"
                 name="area"
                 setAllValues={setAddListingValues}
               />
               <Input1
-                underText="მხოლოდ რიცხვები"
+                underText="მხოლოდ მთელი რიცხვი"
                 isError={
-                  addListingValues.bedroom &&
-                  addListingValues.bedroom &&
-                  !/^\d+$/.test(addListingValues.bedroom)
+                  addListingValues.bedrooms &&
+                  !/^\d+$/.test(addListingValues.bedrooms)
                     ? true
                     : false
                 }
-                digit={true}
                 title="საძინებლების რაოდენობა *"
                 height="h-[42px]"
-                name="bedroom"
+                name="bedrooms"
                 setAllValues={setAddListingValues}
               />
             </div>
@@ -202,7 +265,6 @@ export default function AddListing() {
               <h1 className="text-[14px]">ატვირთე ფოტო</h1>
               <div className="w-full h-[120px]">
                 <OneImgUploader
-                  inputName={""}
                   name="image"
                   setAllValues={setAddListingValues}
                 />
@@ -216,7 +278,7 @@ export default function AddListing() {
             <DropDown1
               title="აირჩიე"
               addagent={true}
-              name="agent"
+              name="agent_id"
               data={AgentsData}
               setAllValues={setAddListingValues}
             />
@@ -224,9 +286,16 @@ export default function AddListing() {
         </div>
         <div className="flex items-center gap-[16px] w-full justify-end ">
           <Button2 text="გააუქმე" setAction={handleClick} icon={false} />
-          <Button1 text="დაამატე ლისტინგი" setAction={""} icon={false} />
+          <Button1
+            text="დაამატე ლისტინგი"
+            setAction={(e) => {
+              AddListing(e);
+            }}
+            icon={false}
+            loader={addListingLoader}
+          />
         </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -4,29 +4,38 @@ import RegionDrop from "./regionDrop/regionDrop";
 import Button3 from "../buttons/button3";
 import FromtoDrop from "./fromtoDrop/fromtoDrop";
 import { ShareStatesCont } from "../contexts/sharedStates";
+// import { useSearchParams } from "react-router-dom";
 
 export default function FilterDropDown({ text }) {
   const { priceData, m2Data } = useContext(ShareStatesCont);
   const targetRef = useRef(null);
   const [dropDown, setDropDown] = useState(false);
+  
+  // let [searchParams, setSearchParams] = useSearchParams();
 
-  const [allFilterValue, setallFilterValue] = useState({
-    cities: [],
-    prices: { from: "", to: "" },
-    areas: { from: "", to: "" },
-    bedroom: "",
+  const [valuesForQuery, setValuesForQuery] = useState({
+    prices: {
+      min: "",
+      max: "",
+    },
+    areas: {
+      min: "",
+      max: "",
+    },
+    bedrooms: "",
   });
 
-  useEffect(() => {
-    setallFilterValue(allFilterValue);
-  }, [allFilterValue]);
+  const [selectedCity, setSelectedCity] = useState("");
+
+  console.log(selectedCity);
+  
 
   const handleInputChange = (event) => {
     let newValue = event.target.value;
 
     newValue = newValue.replace(/[^0-9]/g, "");
 
-    setallFilterValue((prev) => ({ ...prev, bedroom: newValue }));
+    setValuesForQuery((prev) => ({ ...prev, bedrooms: newValue }));
   };
 
   const handleClickOutside = (event) => {
@@ -60,13 +69,13 @@ export default function FilterDropDown({ text }) {
         }`}
       >
         {text === "რეგიონი" && (
-          <RegionDrop setallFilterValue={setallFilterValue} />
+          <RegionDrop setallFilterValue={setSelectedCity} />
         )}
 
         {text === "საფასო კატეგორია" && (
           <FromtoDrop
             text={text}
-            setallFilterValue={setallFilterValue}
+            setallFilterValue={setValuesForQuery}
             name="prices"
             data1={priceData}
             data2={priceData}
@@ -75,7 +84,7 @@ export default function FilterDropDown({ text }) {
         {text === "ფართობი" && (
           <FromtoDrop
             text={text}
-            setallFilterValue={setallFilterValue}
+            setallFilterValue={setValuesForQuery}
             name="areas"
             data1={m2Data}
             data2={m2Data}
@@ -90,7 +99,7 @@ export default function FilterDropDown({ text }) {
             >
               <input
                 onChange={handleInputChange}
-                value={allFilterValue.bedroom}
+                value={valuesForQuery.bedrooms}
                 type="text"
                 className={`select-none outline-none h-full w-full bg-transparent`}
               />

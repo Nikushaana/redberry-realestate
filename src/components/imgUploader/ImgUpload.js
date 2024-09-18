@@ -3,7 +3,6 @@ import trash from "../../images/trash-2.png";
 import pluscrcl from "../../images/plus-circle.png";
 
 export default function OneImgUploader({
-  inputName,
   render,
   name,
   setAllValues,
@@ -66,7 +65,7 @@ export default function OneImgUploader({
           className={`flex items-center justify-center h-full w-full cursor-pointer`}
         >
           <input
-            name={inputName}
+            name={name}
             type="file"
             className="hidden"
             onChange={handleFileSelect}

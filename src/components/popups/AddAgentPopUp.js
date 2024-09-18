@@ -5,9 +5,11 @@ import OneImgUploader from "../imgUploader/ImgUpload";
 import Button2 from "../buttons/button2";
 import Button1 from "../buttons/button1";
 import { axiosUser } from "../contexts/Axios/Axios";
+import { AgentsAxiosContext } from "../contexts/agentsCont";
 
 export default function AddAgentPopUp() {
   const { addAgentPopUp, handleAddAgentPopUp } = useContext(ShareStatesCont);
+  const { setNewRenderAgents } = useContext(AgentsAxiosContext);
 
   const [addAgentValues, setAddAgentValues] = useState({
     name: "",
@@ -17,44 +19,45 @@ export default function AddAgentPopUp() {
     avatar: "",
   });
 
-  const [addAgentRender, setAddAgentRender] = useState(false);
+  const [addAgentRender, setAddAgentRender] = useState();
+  const [addAgentLoader, setAddAgentLoader] = useState(false);
 
-  const AddAgent = async (e) => {
-    if (
-      addAgentValues.name.length > 2 &&
-      addAgentValues.surname.length > 2 &&
-      addAgentValues.email.split("@")[1] === "redberry.ge" &&
-      addAgentValues.phone.length === 9 
-      // &&
-      // String(addAgentValues.phone)[0] === "5"
-    ) {
-      e.preventDefault();
-      const token = process.env.token;
-      const formData = new FormData();
-      formData.append("name", `${addAgentValues.name}`);
-      formData.append("surname", `${addAgentValues.surname}`);
-      formData.append("email", `${addAgentValues.email}`);
-      formData.append("phone", `${addAgentValues.phone}`);
-      formData.append("avatar", `${addAgentValues.avatar}`);
-      console.log(token);
-      
-      axiosUser
-        .post("agents", {
-          formData,
-          Authorization: `Bearer ${process.env.token}`,
-          "Content-Type": "multipart/form-data",
-        })
-        .then((res) => {})
-        .catch((error) => {})
-        .finally(() => {});
-    } else {
-      console.log("araa");
-    }
+  const CloseAddAgentPopUp = (res) => {
+    setAddAgentRender(res);
+    handleAddAgentPopUp();
   };
 
-  const CloseAddAgentPopUp = () => {
-    setAddAgentRender(true);
-    handleAddAgentPopUp();
+  const AddAgent = async (e) => {
+    setAddAgentLoader(true);
+    if (
+      addAgentValues.name?.length > 2 &&
+      addAgentValues.surname?.length > 2 &&
+      addAgentValues.email.split("@")[1] === "redberry.ge" &&
+      addAgentValues.phone?.length === 9 &&
+      String(addAgentValues.phone)[0] === "5" &&
+      addAgentValues.avatar
+    ) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("name", addAgentValues.name);
+      formData.append("surname", addAgentValues.surname);
+      formData.append("email", addAgentValues.email);
+      formData.append("phone", addAgentValues.phone);
+      formData.append("avatar", addAgentValues.avatar);
+
+      axiosUser
+        .post("agents", formData)
+        .then((res) => {
+          CloseAddAgentPopUp(res);
+          setNewRenderAgents(res);
+        })
+        .catch((error) => {})
+        .finally(() => {
+          setAddAgentLoader(false);
+        });
+    } else {
+      setAddAgentLoader(false);
+    }
   };
 
   return (
@@ -66,7 +69,7 @@ export default function AddAgentPopUp() {
       <div className="backdrop-blur-sm bg-[#02152657] w-full h-full absolute top-0 left-0"></div>
       <form
         onSubmit={AddAgent}
-        className={`flex flex-col items-center gap-y-[30px] px-[105px] py-[87px] bg-white rounded-[10px] relative w-[1009px] ${false &&
+        className={`flex flex-col items-center gap-y-[30px] px-[105px] py-[87px] bg-white rounded-[10px] relative w-[1009px] ${addAgentLoader &&
           "pointer-events-none"}`}
       >
         <h1 className="text-[32px] text-defblack">აგენტის დამატება</h1>
@@ -116,8 +119,8 @@ export default function AddAgentPopUp() {
               underText="მხოლოდ რიცხვები"
               isError={
                 addAgentValues.phone &&
-                addAgentValues.phone.length !== 9 &&
-                String(addAgentValues.phone)[0] !== "5"
+                (addAgentValues.phone?.length !== 9 ||
+                  String(addAgentValues.phone)[0] !== "5")
                   ? true
                   : false
               }
@@ -133,7 +136,6 @@ export default function AddAgentPopUp() {
             <h1 className="text-[14px]">ატვირთე ფოტო</h1>
             <div className="w-full h-[120px]">
               <OneImgUploader
-                inputName={"avatar"}
                 name="avatar"
                 render={addAgentRender}
                 setAllValues={setAddAgentValues}
@@ -149,6 +151,7 @@ export default function AddAgentPopUp() {
               AddAgent(e);
             }}
             icon={false}
+            loader={addAgentLoader}
           />
         </div>
       </form>

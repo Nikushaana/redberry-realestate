@@ -14,7 +14,7 @@ export default function FromtoDrop({
   useEffect(() => {
     setallFilterValue((prev) => ({
       ...prev,
-      [name]: { from: value1, to: value2 },
+      [name]: { min: value1, max: value2 },
     }));
   }, [name, setallFilterValue, value1, value2]);
 

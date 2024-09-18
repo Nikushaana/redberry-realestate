@@ -5,7 +5,7 @@ export const axiosUser = axios.create({
 });
 
 axiosUser.interceptors.request.use((config) => {
-  const token = `${process.env.token}`;
+  const token = `${process.env.REACT_APP_TOKEN}`;
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });

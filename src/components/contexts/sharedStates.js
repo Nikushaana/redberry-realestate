@@ -3,14 +3,8 @@ import React, { createContext, useState } from "react";
 export const ShareStatesCont = createContext(null);
 
 export function ShareStatesChild({ children }) {
-  const [delListPopUp, setDelListPopUp] = useState(false);
-  const handleDelListPopUp = () => {
-    if (delListPopUp) {
-      setDelListPopUp(false);
-    } else {
-      setDelListPopUp(true);
-    }
-  };
+  const [delListPopUp, setDelListPopUp] = useState("");
+  
   const [addAgentPopUp, setAddAgentPopUp] = useState(false);
   const handleAddAgentPopUp = () => {
     if (addAgentPopUp) {
@@ -67,7 +61,6 @@ export function ShareStatesChild({ children }) {
   const ShareStatesValue = {
     delListPopUp,
     setDelListPopUp,
-    handleDelListPopUp,
     addAgentPopUp,
     setAddAgentPopUp,
     handleAddAgentPopUp,
