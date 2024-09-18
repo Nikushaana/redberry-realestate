@@ -4,33 +4,49 @@ import Input1 from "../inputs/Input1";
 import OneImgUploader from "../imgUploader/ImgUpload";
 import Button2 from "../buttons/button2";
 import Button1 from "../buttons/button1";
+import { axiosUser } from "../contexts/Axios/Axios";
 
 export default function AddAgentPopUp() {
   const { addAgentPopUp, handleAddAgentPopUp } = useContext(ShareStatesCont);
 
   const [addAgentValues, setAddAgentValues] = useState({
-    agent_fname: "",
-    agent_lname: "",
-    agent_email: "",
-    agent_phone: "",
-    agent_image: "",
+    name: "",
+    surname: "",
+    email: "",
+    phone: "",
+    avatar: "",
   });
 
   const [addAgentRender, setAddAgentRender] = useState(false);
 
-  const AddAgent = () => {
+  const AddAgent = async (e) => {
     if (
-      addAgentValues.agent_fname &&
-      addAgentValues.agent_lname &&
-      addAgentValues.agent_email &&
-      addAgentValues.agent_phone &&
-      // addAgentValues.agent_image &&
-      addAgentValues.agent_fname.length > 2 &&
-      addAgentValues.agent_lname.length > 2 &&
-      addAgentValues.agent_email.split("@")[1] === "redberry.ge" &&
-      addAgentValues.agent_phone.length === 11
+      addAgentValues.name.length > 2 &&
+      addAgentValues.surname.length > 2 &&
+      addAgentValues.email.split("@")[1] === "redberry.ge" &&
+      addAgentValues.phone.length === 9 
+      // &&
+      // String(addAgentValues.phone)[0] === "5"
     ) {
-      console.log("damateba");
+      e.preventDefault();
+      const token = process.env.token;
+      const formData = new FormData();
+      formData.append("name", `${addAgentValues.name}`);
+      formData.append("surname", `${addAgentValues.surname}`);
+      formData.append("email", `${addAgentValues.email}`);
+      formData.append("phone", `${addAgentValues.phone}`);
+      formData.append("avatar", `${addAgentValues.avatar}`);
+      console.log(token);
+      
+      axiosUser
+        .post("agents", {
+          formData,
+          Authorization: `Bearer ${process.env.token}`,
+          "Content-Type": "multipart/form-data",
+        })
+        .then((res) => {})
+        .catch((error) => {})
+        .finally(() => {});
     } else {
       console.log("araa");
     }
@@ -48,7 +64,8 @@ export default function AddAgentPopUp() {
       }`}
     >
       <div className="backdrop-blur-sm bg-[#02152657] w-full h-full absolute top-0 left-0"></div>
-      <div
+      <form
+        onSubmit={AddAgent}
         className={`flex flex-col items-center gap-y-[30px] px-[105px] py-[87px] bg-white rounded-[10px] relative w-[1009px] ${false &&
           "pointer-events-none"}`}
       >
@@ -58,58 +75,57 @@ export default function AddAgentPopUp() {
             <Input1
               underText="მინიმუმ ორი სიმბოლო"
               isError={
-                addAgentValues.agent_fname &&
-                addAgentValues.agent_fname.length < 2
+                addAgentValues.name && addAgentValues.name.length < 2
                   ? true
                   : false
               }
               title="სახელი *"
               render={addAgentRender}
               height="h-[42px]"
-              name="agent_fname"
+              name="name"
               setAllValues={setAddAgentValues}
             />
             <Input1
               underText="მინიმუმ ორი სიმბოლო"
               isError={
-                addAgentValues.agent_lname &&
-                addAgentValues.agent_lname.length < 2
+                addAgentValues.surname && addAgentValues.surname.length < 2
                   ? true
                   : false
               }
               title="გვარი"
               render={addAgentRender}
               height="h-[42px]"
-              name="agent_lname"
+              name="surname"
               setAllValues={setAddAgentValues}
             />
             <Input1
               underText="გამოიყენეთ @redberry.ge ფოსტა"
               isError={
-                addAgentValues.agent_email &&
-                addAgentValues.agent_email.split("@")[1] !== "redberry.ge"
+                addAgentValues.email &&
+                addAgentValues.email.split("@")[1] !== "redberry.ge"
                   ? true
                   : false
               }
               title="ელ-ფოსტა*"
               render={addAgentRender}
               height="h-[42px]"
-              name="agent_email"
+              name="email"
               setAllValues={setAddAgentValues}
             />
             <Input1
               underText="მხოლოდ რიცხვები"
               isError={
-                addAgentValues.agent_phone &&
-                addAgentValues.agent_phone.length !== 11
+                addAgentValues.phone &&
+                addAgentValues.phone.length !== 9 &&
+                String(addAgentValues.phone)[0] !== "5"
                   ? true
                   : false
               }
               title="ტელეფონის ნომერი"
               render={addAgentRender}
               height="h-[42px]"
-              isNumber={true}
-              name="agent_phone"
+              digit={true}
+              name="phone"
               setAllValues={setAddAgentValues}
             />
           </div>
@@ -117,8 +133,8 @@ export default function AddAgentPopUp() {
             <h1 className="text-[14px]">ატვირთე ფოტო</h1>
             <div className="w-full h-[120px]">
               <OneImgUploader
-                inputName={"agent_image"}
-                name="agent_image"
+                inputName={"avatar"}
+                name="avatar"
                 render={addAgentRender}
                 setAllValues={setAddAgentValues}
               />
@@ -127,9 +143,15 @@ export default function AddAgentPopUp() {
         </div>
         <div className="flex items-center gap-[16px] w-full justify-end">
           <Button2 text="გააუქმე" setAction={CloseAddAgentPopUp} icon={false} />
-          <Button1 text="დაამატე აგენტი" setAction={AddAgent} icon={false} />
+          <Button1
+            text="დაამატე აგენტი"
+            setAction={(e) => {
+              AddAgent(e);
+            }}
+            icon={false}
+          />
         </div>
-      </div>
+      </form>
     </div>
   );
 }

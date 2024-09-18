@@ -8,10 +8,10 @@ import square from "../../../images/Vector (1).png";
 import direction from "../../../images/Vector (2).png";
 import phone from "../../../images/Vector (4).png";
 import envelope from "../../../images/Shape.png";
-import { Link } from "react-router-dom";
 import Slider1 from "../../sliders/slider1";
 import { ShareStatesCont } from "../../contexts/sharedStates";
 import Button4 from "../../buttons/button4";
+import { Link } from "react-router-dom";
 
 export default function RealEstate() {
   const { handleDelListPopUp } = useContext(ShareStatesCont);

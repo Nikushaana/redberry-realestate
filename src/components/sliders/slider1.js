@@ -23,7 +23,7 @@ export default function Slider1({ title }) {
         ) : (
           <div className="w-full relative">
             <button
-              className={`absolute top-[50%] left-[-60px] active:bg-[red] w-[30px] h-[30px] flex items-center justify-center cursor-pointer`}
+              className={`absolute top-[50%] left-[-60px] w-[30px] h-[30px] flex items-center justify-center cursor-pointer`}
               onClick={() => swiperRef.current?.slidePrev()}
             >
               <img

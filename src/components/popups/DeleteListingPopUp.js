@@ -13,7 +13,9 @@ export default function DeleteListingPopUp() {
         delListPopUp ? "z-50" : "z-[-5]"
       }`}
     >
-      <div className="backdrop-blur-sm bg-[#02152657] w-full h-full absolute top-0 left-0"></div>
+      <div onClick={() => {
+            handleDelListPopUp();
+          }} className="backdrop-blur-sm bg-[#02152657] w-full h-full absolute top-0 left-0"></div>
       <div className={`px-[180px] py-[60px] bg-white rounded-[20px] relative`}>
         <div
           onClick={() => {

@@ -8,15 +8,17 @@ import { Link } from "react-router-dom";
 
 export default function PropertyCard() {
   return (
-    <Link to={`/real-estate/${1}`} className="relative w-full rounded-[14px] overflow-hidden border-[1px] border-defaultBg">
+    <div className="relative w-full rounded-[14px] overflow-hidden border-[1px] border-defaultBg ">
       <p className="absolute top-[20px] left-[20px] rounded-[15px] text-[12px] text-white bg-defTranspblack w-[90px] h-[26px] flex items-center justify-center">
         იყიდება
       </p>
-      <img
-        className="w-full h-[307px] object-cover"
-        src={img}
-        alt="property img"
-      />
+      <Link to={`/real-estate/${1}`}>
+        <img
+          className="w-full h-[307px] object-cover"
+          src={img}
+          alt="property img"
+        />
+      </Link>
       <div className="flex flex-col gap-y-[20px] py-[22px] px-[25px]">
         <div className="flex flex-col gap-y-[6px]">
           <h1 className="text-[28px]">80 000 ₾</h1>
@@ -40,6 +42,6 @@ export default function PropertyCard() {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

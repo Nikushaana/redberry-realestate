@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 export default function FromToInput({
+  value1,
+  setvalue1,
+  value2,
+  setvalue2,
   lastIcon,
   isNumber,
   digit,
 }) {
   const [isError, setIsError] = useState(false);
 
-  const [values, setValues] = useState({
-    from: "",
-    to: "",
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputChange = (event, setValue) => {
+    const { value } = event.target;
     let newValue = value;
 
     if (isNumber) {
@@ -29,23 +28,19 @@ export default function FromToInput({
       newValue = newValue.replace(/[^0-9]/g, "");
     }
 
-    setValues((prevValues) => ({
-      ...prevValues,
-      [name]: newValue,
-    }));
+    setValue(newValue);
   };
 
-
   useEffect(() => {
-    const fromValue = parseInt(values.from.replace(/\s/g, ""), 10);
-    const toValue = parseInt(values.to.replace(/\s/g, ""), 10);
+    const fromValue = parseInt(value1.replace(/\s/g, ""), 10);
+    const toValue = parseInt(value2.replace(/\s/g, ""), 10);
 
     if (fromValue && toValue && fromValue > toValue) {
       setIsError(true);
     } else {
       setIsError(false);
     }
-  }, [values.from, values.to]);
+  }, [value1, value2]);
 
   return (
     <div className="flex flex-col gap-y-[8px] ">
@@ -57,8 +52,8 @@ export default function FromToInput({
          }`}
         >
           <input
-            onChange={handleInputChange}
-            value={values.from}
+            onChange={(e) => handleInputChange(e, setvalue1)}
+            value={value1}
             type="text"
             name="from"
             placeholder="დან"
@@ -73,8 +68,8 @@ export default function FromToInput({
          }`}
         >
           <input
-            onChange={handleInputChange}
-            value={values.to}
+            onChange={(e) => handleInputChange(e, setvalue2)}
+            value={value2}
             type="text"
             name="to"
             placeholder="მდე"
