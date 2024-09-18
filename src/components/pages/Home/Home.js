@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import PropertyCard from "../../cards/PropertyCard";
 import { ShareStatesCont } from "../../contexts/sharedStates";
 import Button1 from "../../buttons/button1";
