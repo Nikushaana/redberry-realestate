@@ -21,7 +21,7 @@ export default function Home() {
     navigate("/add-listing");
   };
 
-  const [filteredHouses, setFilteredHouses] = useState(RealEstateData);
+  const filteredHouses = RealEstateData;
 
   const cities = [
     {

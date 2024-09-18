@@ -4,14 +4,14 @@ import RegionDrop from "./regionDrop/regionDrop";
 import Button3 from "../buttons/button3";
 import FromtoDrop from "./fromtoDrop/fromtoDrop";
 import { ShareStatesCont } from "../contexts/sharedStates";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 
 export default function FilterDropDown({ text }) {
   const { priceData, m2Data } = useContext(ShareStatesCont);
   const targetRef = useRef(null);
   const [dropDown, setDropDown] = useState(false);
   
-  let [searchParams, setSearchParams] = useSearchParams();
+  // let [searchParams, setSearchParams] = useSearchParams();
 
   const [valuesForQuery, setValuesForQuery] = useState({
     prices: {
@@ -26,6 +26,9 @@ export default function FilterDropDown({ text }) {
   });
 
   const [selectedCity, setSelectedCity] = useState("");
+
+  console.log(selectedCity);
+  
 
   const handleInputChange = (event) => {
     let newValue = event.target.value;
