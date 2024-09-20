@@ -4,7 +4,9 @@ export const ShareStatesCont = createContext(null);
 
 export function ShareStatesChild({ children }) {
   const [delListPopUp, setDelListPopUp] = useState("");
-  
+
+  const [addListingLoader, setAddListingLoader] = useState(false);
+
   const [addAgentPopUp, setAddAgentPopUp] = useState(false);
   const handleAddAgentPopUp = () => {
     if (addAgentPopUp) {
@@ -64,6 +66,9 @@ export function ShareStatesChild({ children }) {
     addAgentPopUp,
     setAddAgentPopUp,
     handleAddAgentPopUp,
+
+    addListingLoader,
+    setAddListingLoader,
 
     priceData,
     m2Data,

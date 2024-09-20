@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FromToInput from "../../inputs/FromToInput";
+import { useSearchParams } from "react-router-dom";
 
 export default function FromtoDrop({
   text,
@@ -8,8 +9,15 @@ export default function FromtoDrop({
   setallFilterValue,
   name,
 }) {
+  const [searchParams] = useSearchParams();
+
   const [value1, setvalue1] = useState("");
   const [value2, setvalue2] = useState("");
+
+  useEffect(() => {
+    setvalue1(text === "საფასო კატეგორია" ? searchParams.get("minPrice") : searchParams.get("minArea"));
+    setvalue2(text === "საფასო კატეგორია" ? searchParams.get("maxPrice") : searchParams.get("maxArea"));
+  }, [searchParams, text]);
 
   useEffect(() => {
     setallFilterValue((prev) => ({

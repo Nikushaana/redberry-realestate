@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ShareStatesCont } from "../contexts/sharedStates";
 import Input1 from "../inputs/Input1";
 import OneImgUploader from "../imgUploader/ImgUpload";
@@ -6,6 +6,7 @@ import Button2 from "../buttons/button2";
 import Button1 from "../buttons/button1";
 import { axiosUser } from "../contexts/Axios/Axios";
 import { AgentsAxiosContext } from "../contexts/agentsCont";
+import { Base64ToFile } from "../base64ToFile/base64ToFile";
 
 export default function AddAgentPopUp() {
   const { addAgentPopUp, handleAddAgentPopUp } = useContext(ShareStatesCont);
@@ -21,17 +22,51 @@ export default function AddAgentPopUp() {
 
   const [addAgentRender, setAddAgentRender] = useState();
   const [addAgentLoader, setAddAgentLoader] = useState(false);
+  const [addAgentError, setAddAgentError] = useState({
+    name: false,
+    surname: false,
+    email: false,
+    phone: false,
+    avatar: false,
+  });
 
-  const CloseAddAgentPopUp = (res) => {
-    setAddAgentRender(res);
+  useEffect(() => {
+    if (addAgentValues.name?.length > 2) {
+      setAddAgentError((pre) => ({ ...pre, name: false }));
+    }
+    if (addAgentValues.surname?.length > 2) {
+      setAddAgentError((pre) => ({ ...pre, surname: false }));
+    }
+    if (addAgentValues.email.split("@")[1] === "redberry.ge") {
+      setAddAgentError((pre) => ({ ...pre, email: false }));
+    }
+    if (addAgentValues.phone?.length === 9) {
+      setAddAgentError((pre) => ({ ...pre, phone: false }));
+    }
+    if (String(addAgentValues.phone)[0] === "5") {
+      setAddAgentError((pre) => ({ ...pre, phone: false }));
+    }
+    if (addAgentValues.avatar) {
+      setAddAgentError((pre) => ({ ...pre, avatar: false }));
+    }
+  }, [
+    addAgentValues.avatar,
+    addAgentValues.email,
+    addAgentValues.name?.length,
+    addAgentValues.phone,
+    addAgentValues.surname?.length,
+  ]);
+
+  const CloseAddAgentPopUp = () => {
+    setAddAgentRender(Date);
     handleAddAgentPopUp();
   };
 
   const AddAgent = async (e) => {
     setAddAgentLoader(true);
     if (
-      addAgentValues.name?.length > 2 &&
-      addAgentValues.surname?.length > 2 &&
+      addAgentValues.name?.length >= 2 &&
+      addAgentValues.surname?.length >= 2 &&
       addAgentValues.email.split("@")[1] === "redberry.ge" &&
       addAgentValues.phone?.length === 9 &&
       String(addAgentValues.phone)[0] === "5" &&
@@ -43,7 +78,11 @@ export default function AddAgentPopUp() {
       formData.append("surname", addAgentValues.surname);
       formData.append("email", addAgentValues.email);
       formData.append("phone", addAgentValues.phone);
-      formData.append("avatar", addAgentValues.avatar);
+      const imageFile = Base64ToFile(
+        addAgentValues.avatar,
+        "listing_image.jpg"
+      );
+      formData.append("avatar", imageFile);
 
       axiosUser
         .post("agents", formData)
@@ -56,6 +95,24 @@ export default function AddAgentPopUp() {
           setAddAgentLoader(false);
         });
     } else {
+      if (addAgentValues.name?.length < 2) {
+        setAddAgentError((pre) => ({ ...pre, name: true }));
+      }
+      if (addAgentValues.surname?.length < 2) {
+        setAddAgentError((pre) => ({ ...pre, surname: true }));
+      }
+      if (addAgentValues.email.split("@")[1] !== "redberry.ge") {
+        setAddAgentError((pre) => ({ ...pre, email: true }));
+      }
+      if (addAgentValues.phone?.length !== 9) {
+        setAddAgentError((pre) => ({ ...pre, phone: true }));
+      }
+      if (String(addAgentValues.phone)[0] !== "5") {
+        setAddAgentError((pre) => ({ ...pre, phone: true }));
+      }
+      if (!addAgentValues.avatar) {
+        setAddAgentError((pre) => ({ ...pre, avatar: true }));
+      }
       setAddAgentLoader(false);
     }
   };
@@ -66,7 +123,10 @@ export default function AddAgentPopUp() {
         addAgentPopUp ? "z-50" : "z-[-5]"
       }`}
     >
-      <div className="backdrop-blur-sm bg-[#02152657] w-full h-full absolute top-0 left-0"></div>
+      <div
+        onClick={() => CloseAddAgentPopUp()}
+        className="backdrop-blur-sm bg-[#02152657] w-full h-full absolute top-0 left-0"
+      ></div>
       <form
         onSubmit={AddAgent}
         className={`flex flex-col items-center gap-y-[30px] px-[105px] py-[87px] bg-white rounded-[10px] relative w-[1009px] ${addAgentLoader &&
@@ -78,9 +138,9 @@ export default function AddAgentPopUp() {
             <Input1
               underText="მინიმუმ ორი სიმბოლო"
               isError={
-                addAgentValues.name && addAgentValues.name.length < 2
+                (addAgentValues.name && addAgentValues.name?.length < 2
                   ? true
-                  : false
+                  : false) || addAgentError.name
               }
               title="სახელი *"
               render={addAgentRender}
@@ -91,11 +151,11 @@ export default function AddAgentPopUp() {
             <Input1
               underText="მინიმუმ ორი სიმბოლო"
               isError={
-                addAgentValues.surname && addAgentValues.surname.length < 2
+                (addAgentValues.surname && addAgentValues.surname?.length < 2
                   ? true
-                  : false
+                  : false) || addAgentError.surname
               }
-              title="გვარი"
+              title="გვარი *"
               render={addAgentRender}
               height="h-[42px]"
               name="surname"
@@ -104,12 +164,12 @@ export default function AddAgentPopUp() {
             <Input1
               underText="გამოიყენეთ @redberry.ge ფოსტა"
               isError={
-                addAgentValues.email &&
+                (addAgentValues.email &&
                 addAgentValues.email.split("@")[1] !== "redberry.ge"
                   ? true
-                  : false
+                  : false) || addAgentError.email
               }
-              title="ელ-ფოსტა*"
+              title="ელ-ფოსტა *"
               render={addAgentRender}
               height="h-[42px]"
               name="email"
@@ -118,13 +178,13 @@ export default function AddAgentPopUp() {
             <Input1
               underText="მხოლოდ რიცხვები"
               isError={
-                addAgentValues.phone &&
+                (addAgentValues.phone &&
                 (addAgentValues.phone?.length !== 9 ||
                   String(addAgentValues.phone)[0] !== "5")
                   ? true
-                  : false
+                  : false) || addAgentError.phone
               }
-              title="ტელეფონის ნომერი"
+              title="ტელეფონის ნომერი *"
               render={addAgentRender}
               height="h-[42px]"
               digit={true}
@@ -133,12 +193,14 @@ export default function AddAgentPopUp() {
             />
           </div>
           <div className="flex flex-col gap-y-[7px]">
-            <h1 className="text-[14px]">ატვირთე ფოტო</h1>
+            <h1 className="text-[14px]">ატვირთე ფოტო *</h1>
             <div className="w-full h-[120px]">
               <OneImgUploader
                 name="avatar"
                 render={addAgentRender}
                 setAllValues={setAddAgentValues}
+                isError={addAgentError.avatar}
+                UnderText="სავალდებულო"
               />
             </div>
           </div>

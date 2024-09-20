@@ -1,7 +1,13 @@
 import React from "react";
 import arrow from "../../images/arrow.png";
 
-export default function DropDownButton({ text, dropDown, setDropDown, style }) {
+export default function DropDownButton({
+  text,
+  dropDown,
+  setDropDown,
+  style,
+  isH1,
+}) {
   return (
     <div
       onClick={() => {
@@ -9,7 +15,7 @@ export default function DropDownButton({ text, dropDown, setDropDown, style }) {
       }}
       className={`${style} `}
     >
-      <h1>{text}</h1>
+      {isH1 ? <h1>{text}</h1> : <p>{text}</p>}
 
       <img
         className={`w-[14px] h-[14px] object-contain duration-100 ${

@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import DropDownButton from "../buttons/dropDownButton";
 import pluscrcl from "../../images/plus-circle.png";
 import { ShareStatesCont } from "../contexts/sharedStates";
+import checkgreen from "../../images/Vector (5).png";
+import checkred from "../../images/Vector (6).png";
+import checkdef from "../../images/Vector (7).png";
 
 export default function DropDown1({
   firstValue,
@@ -11,11 +14,12 @@ export default function DropDown1({
   setAllValues,
   addagent,
   data,
+  isError,
 }) {
   const { setAddAgentPopUp } = useContext(ShareStatesCont);
   const targetRef = useRef();
   const [dropDown, setDropDown] = useState(false);
- 
+
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -26,7 +30,9 @@ export default function DropDown1({
   }, [value]);
 
   useEffect(() => {
-    setValue(firstValue);
+    if (firstValue) {
+      setValue(firstValue);
+    }
   }, [firstValue]);
 
   useEffect(() => {
@@ -57,10 +63,23 @@ export default function DropDown1({
           text={value}
           dropDown={dropDown}
           setDropDown={setDropDown}
-          style={`flex items-center w-full justify-between px-[14px] h-[42px] cursor-pointer border-[1px] border-defGray duration-200 ${
+          isH1={false}
+          style={`flex items-center w-full justify-between text-[14px] px-[14px] h-[42px] cursor-pointer border-[1px] border-defGray duration-200 ${
             dropDown ? "rounded-t-[6px]" : "rounded-[6px]"
-          }`}
+          } ${isError ? " border-defOrng" : " border-defGray"}`}
         />
+        <div
+          className={`flex items-center gap-[7px] ${
+            value ? "text-defGreen" : isError ? "text-defOrng" : "text-defblack"
+          }`}
+        >
+          <img
+            className={``}
+            src={value ? checkgreen : isError ? checkred : checkdef}
+            alt="ing"
+          />{" "}
+          <p className={`text-[14px]`}>სავალდებულო</p>
+        </div>
         <div
           style={{
             height: `${
@@ -90,7 +109,9 @@ export default function DropDown1({
               onClick={() => {
                 setAddAgentPopUp(true);
               }}
-              className={`min-h-[42px] h-[42px] cursor-pointer flex items-center gap-[8px] px-[14px]  border-defGray ${data ? "border-b-[1px]" : "border-b-0"}
+              className={`min-h-[42px] h-[42px] cursor-pointer flex items-center gap-[8px] px-[14px]  border-defGray ${
+                data?.length > 0 ? "border-b-[1px]" : "border-b-0"
+              }
                 
               `}
             >
@@ -105,9 +126,12 @@ export default function DropDown1({
           {data?.map((item, index) => (
             <div
               key={item.id}
-              onClick={() => setValue(item.name)}
+              onClick={() => {
+                setValue(item.name);
+                setDropDown(false);
+              }}
               className={`min-h-[42px] h-[42px] flex items-center px-[14px]  border-defGray cursor-pointer ${
-                data.length === index + 1 ? "" : "border-b-[1px]"
+                data?.length === index + 1 ? "" : "border-b-[1px]"
               }`}
             >
               <p>{item.name}</p>

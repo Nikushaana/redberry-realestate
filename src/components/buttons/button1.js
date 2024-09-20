@@ -7,7 +7,7 @@ export default function Button1({ setAction, text, icon, loader }) {
       onClick={(e) => {
         setAction(e);
       }}
-      className={`flex items-center justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] duration-150 text-white ${loader ? "bg-[#f93a1da2]" : "bg-defOrng hover:bg-defOrngHvr"}`}
+      className={`flex items-center justify-center gap-[2px] cursor-pointer h-[47px] px-[16px] rounded-[10px] duration-150 text-white ${loader ? "bg-[#f93a1da2] pointer-events-none" : "bg-defOrng hover:bg-defOrngHvr"}`}
     >
       {icon && (
         <img

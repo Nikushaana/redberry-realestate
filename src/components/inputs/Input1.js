@@ -17,7 +17,7 @@ export default function Input1({
   isError,
   underText,
 }) {
-  const [inputText, setInputText] = useState();
+  const [inputText, setInputText] = useState("");
 
   useEffect(() => {
     if (setAllValues) {
@@ -27,7 +27,9 @@ export default function Input1({
   }, [inputText]);
 
   useEffect(() => {
-    setInputText(firstValue);
+    if (firstValue) {
+      setInputText(firstValue);
+    }
   }, [firstValue]);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function Input1({
 
     if (isNumber) {
       newText = newText
-        .replace(/[^0-9]/g, "")
+        ?.replace(/[^0-9]/g, "")
         .replace(/\s/g, "")
         .replace(/(.{3})/g, "$1 ")
         .trim()
@@ -49,7 +51,7 @@ export default function Input1({
     }
 
     if (digit) {
-      newText = newText.replace(/[^0-9]/g, "");
+      newText = newText?.replace(/[^0-9]/g, "");
     }
 
     setInputText(newText);
@@ -76,23 +78,23 @@ export default function Input1({
       </div>
       <div
         className={`flex items-center gap-[7px] ${
-          inputText
-            ? isError
-              ? "text-defOrng"
-              : "text-defGreen"
+          isError
+            ? "text-defOrng"
+            : inputText
+            ? "text-defGreen"
             : "text-defblack"
         }`}
       >
         <img
           className={``}
-          src={inputText ? (isError ? checkred : checkgreen) : checkdef}
+          src={isError ? checkred : inputText ? checkgreen : checkdef}
           alt="ing"
         />{" "}
         <p className={`text-[14px]`}>
-          {inputText
-            ? isError
-              ? "ჩაწერეთ ვალიდური მონაცემი"
-              : underText
+          {isError
+            ? "ჩაწერეთ ვალიდური მონაცემი"
+            : inputText
+            ? underText
             : underText}
         </p>
       </div>
