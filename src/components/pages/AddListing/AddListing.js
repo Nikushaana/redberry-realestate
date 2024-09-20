@@ -1,5 +1,4 @@
 import React, {
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -110,6 +109,7 @@ export default function AddListing() {
       setAddListingErrors((pre) => ({ ...pre, agent_id: false }));
     }
     setAddListingLoader(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     addListingValues.address?.length,
     addListingValues.agent_id,

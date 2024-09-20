@@ -21,6 +21,7 @@ const CitiesContext = ({ children }) => {
       .finally(() => {
         setAddListingLoader(false)
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newRenderCities]);
 
   return (
