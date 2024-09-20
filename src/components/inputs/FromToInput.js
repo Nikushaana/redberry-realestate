@@ -16,8 +16,7 @@ export default function FromToInput({
     let newValue = value;
 
     if (isNumber) {
-      newValue = newValue
-        .replace(/[^0-9]/g, "")
+      newValue = newValue?.replace(/[^0-9]/g, "")
         .replace(/\s/g, "")
         .replace(/(.{3})/g, "$1 ")
         .trim()
@@ -25,15 +24,15 @@ export default function FromToInput({
     }
 
     if (digit) {
-      newValue = newValue.replace(/[^0-9]/g, "");
+      newValue = newValue?.replace(/[^0-9]/g, "");
     }
 
     setValue(newValue);
   };
 
   useEffect(() => {
-    const fromValue = parseInt(value1.replace(/\s/g, ""), 10);
-    const toValue = parseInt(value2.replace(/\s/g, ""), 10);
+    const fromValue = parseInt(value1?.replace(/\s/g, ""), 10);
+    const toValue = parseInt(value2?.replace(/\s/g, ""), 10);
 
     if (fromValue && toValue && fromValue > toValue) {
       setIsError(true);

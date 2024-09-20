@@ -1,23 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BsCheck } from "react-icons/bs";
 import { RegionsAxiosContext } from "../../contexts/regionsCont";
+import { useSearchParams } from "react-router-dom";
 
 export default function RegionDrop({ setallFilterValue }) {
   const { RegionsData } = useContext(RegionsAxiosContext);
+  const [searchParams] = useSearchParams();
 
-  const [toggledcities, settoggledcities] = useState([]);
+  const [toggledregion, settoggledregion] = useState([]);
 
   useEffect(() => {
-    setallFilterValue(toggledcities);
-  }, [setallFilterValue, toggledcities]);
+    const region = searchParams?.get("region");
 
-  const handleToggleCity = (cityItem) => {
-    if (toggledcities.includes(cityItem.name)) {
-      settoggledcities((prev) =>
-        prev.filter((cityName) => cityName !== cityItem.name)
-      );
+    // Ensure `region` is split into an array if it's a string
+    if (region) {
+      settoggledregion(region.split(",").map((city) => city.trim()));
     } else {
-      settoggledcities((prev) => [...prev, cityItem.name]);
+      settoggledregion([]);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    setallFilterValue((prev) => ({
+      ...prev,
+      region: toggledregion,
+    }));
+  }, [setallFilterValue, toggledregion]);
+
+  const handleToggleCity = (cityName) => {
+    if (toggledregion.includes(cityName)) {
+      settoggledregion((prev) => prev.filter((city) => city !== cityName));
+    } else {
+      settoggledregion((prev) => [...prev, cityName]);
     }
   };
 
@@ -29,12 +43,12 @@ export default function RegionDrop({ setallFilterValue }) {
           RegionsData?.map((item) => (
             <div
               key={item.id}
-              onClick={() => handleToggleCity(item)}
+              onClick={() => handleToggleCity(item.name)}
               className="flex items-center gap-[8px] cursor-pointer"
             >
               <div
                 className={`w-[20px] h-[20px] text-white flex items-center overflow-hidden justify-center rounded-[2px] border-[1px] duration-100 ${
-                  toggledcities.includes(item.name)
+                  toggledregion?.includes(item.name)
                     ? "bg-defGreen border-white"
                     : " border-defaultBg"
                 }`}

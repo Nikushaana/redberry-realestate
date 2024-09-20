@@ -4,39 +4,92 @@ import RegionDrop from "./regionDrop/regionDrop";
 import Button3 from "../buttons/button3";
 import FromtoDrop from "./fromtoDrop/fromtoDrop";
 import { ShareStatesCont } from "../contexts/sharedStates";
-// import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-export default function FilterDropDown({ text }) {
+export default function FilterDropDown({ text, valuesForQuery, settAllValue }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { priceData, m2Data } = useContext(ShareStatesCont);
   const targetRef = useRef(null);
   const [dropDown, setDropDown] = useState(false);
-  
-  // let [searchParams, setSearchParams] = useSearchParams();
 
-  const [valuesForQuery, setValuesForQuery] = useState({
-    prices: {
-      min: "",
-      max: "",
-    },
-    areas: {
-      min: "",
-      max: "",
-    },
-    bedrooms: "",
-  });
+  const handleFilter = () => {
+    setDropDown(false);
+    const params = new URLSearchParams(searchParams);
 
-  const [selectedCity, setSelectedCity] = useState("");
+    if (valuesForQuery?.region?.length > 0) {
+      params.set("region", valuesForQuery?.region);
+    } else if (text === "რეგიონი") {
+      params.set("region", "");
+    } else {
+      params.set("region", "");
+    }
+    if (valuesForQuery?.prices?.min) {
+      params.set("minPrice", valuesForQuery?.prices?.min);
+    } else if (text === "საფასო კატეგორია") {
+      params.set("minPrice", "");
+    } else {
+      params.set("minPrice", "");
+    }
+    if (valuesForQuery?.prices?.max) {
+      params.set("maxPrice", valuesForQuery?.prices?.max);
+    } else if (text === "საფასო კატეგორია") {
+      params.set("maxPrice", "");
+    } else {
+      params.set("maxPrice", "");
+    }
+    if (valuesForQuery?.areas?.min) {
+      params.set("minArea", valuesForQuery?.areas?.min);
+    } else if (text === "ფართობი") {
+      params.set("minArea", "");
+    } else {
+      params.set("minArea", "");
+    }
+    if (valuesForQuery?.areas?.max) {
+      params.set("maxArea", valuesForQuery?.areas?.max);
+    } else if (text === "ფართობი") {
+      params.set("maxArea", "");
+    } else {
+      params.set("maxArea", "");
+    }
+    if (valuesForQuery?.bedrooms) {
+      params.set("bedrooms", valuesForQuery?.bedrooms);
+    } else if (text === "საძინებლის რაოდენობა") {
+      params.set("bedrooms", "");
+    } else {
+      params.set("bedrooms", "");
+    }
 
-  console.log(selectedCity);
-  
+    if (
+      (text === "საფასო კატეგორია" &&
+        parseInt(valuesForQuery?.prices?.min) >
+          parseInt(valuesForQuery?.prices?.max)) ||
+      (text === "ფართობი" &&
+        parseInt(valuesForQuery?.areas?.min) >
+          parseInt(valuesForQuery?.areas?.max))
+    ) {
+    } else {
+      navigate({
+        pathname: "/",
+        search: `?${params.toString()}`,
+      });
+    }
+  };
 
   const handleInputChange = (event) => {
     let newValue = event.target.value;
 
-    newValue = newValue.replace(/[^0-9]/g, "");
+    newValue = newValue?.replace(/[^0-9]/g, "");
 
-    setValuesForQuery((prev) => ({ ...prev, bedrooms: newValue }));
+    settAllValue((prev) => ({ ...prev, bedrooms: newValue }));
   };
+
+  useEffect(() => {
+    settAllValue((prev) => ({
+      ...prev,
+      bedrooms: searchParams.get("bedrooms"),
+    }));
+  }, [searchParams, settAllValue, text]);
 
   const handleClickOutside = (event) => {
     if (targetRef.current && !targetRef.current.contains(event.target)) {
@@ -52,10 +105,11 @@ export default function FilterDropDown({ text }) {
   }, []);
 
   return (
-    <div ref={targetRef} className="relative">
+    <div ref={targetRef} className="relative ">
       <DropDownButton
         text={text}
         dropDown={dropDown}
+        isH1={true}
         setDropDown={setDropDown}
         style={`flex items-center gap-[4px] px-[14px] py-[8px] rounded-[6px] cursor-pointer duration-100 ${
           dropDown ? "bg-defFltrAct" : ""
@@ -68,14 +122,12 @@ export default function FilterDropDown({ text }) {
             : "top-[30px] opacity-0 z-[-2]"
         }`}
       >
-        {text === "რეგიონი" && (
-          <RegionDrop setallFilterValue={setSelectedCity} />
-        )}
+        {text === "რეგიონი" && <RegionDrop setallFilterValue={settAllValue} />}
 
         {text === "საფასო კატეგორია" && (
           <FromtoDrop
             text={text}
-            setallFilterValue={setValuesForQuery}
+            setallFilterValue={settAllValue}
             name="prices"
             data1={priceData}
             data2={priceData}
@@ -84,7 +136,7 @@ export default function FilterDropDown({ text }) {
         {text === "ფართობი" && (
           <FromtoDrop
             text={text}
-            setallFilterValue={setValuesForQuery}
+            setallFilterValue={settAllValue}
             name="areas"
             data1={m2Data}
             data2={m2Data}
@@ -107,7 +159,11 @@ export default function FilterDropDown({ text }) {
           </div>
         )}
 
-        <Button3 setAction={""} />
+        <Button3
+          setAction={() => {
+            handleFilter();
+          }}
+        />
       </div>
     </div>
   );

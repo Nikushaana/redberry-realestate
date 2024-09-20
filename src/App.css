@@ -41,13 +41,18 @@
 
 @font-face {
   font-family: boldfont;
-  src: url(././styles/fonts/FiraGO-SemiBold.otf);
+   src: url(./styles/fonts/FiraGO-Bold.otf);
   
 }
 
 @font-face {
   font-family: font;
   src: url(././styles/fonts/FiraGO-Regular.otf);
+}
+
+@font-face {
+  font-family: myuppercase;
+  src: url(././styles/fonts/HelveticaNeueMedium.otf);
 }
 
 p,
@@ -66,6 +71,12 @@ h5,
 h6
 {
   font-family: boldfont;
+}
+
+.myuppercase{
+  font-family: myuppercase;
+  font-feature-settings: "case" on;
+  font-size: 500;
 }
 
 .showyScroll::-webkit-scrollbar {

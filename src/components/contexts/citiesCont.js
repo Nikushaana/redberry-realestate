@@ -1,9 +1,11 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { axiosUser } from "./Axios/Axios";
+import { ShareStatesCont } from "./sharedStates";
 
 export const CitiesAxiosContext = createContext(null);
 
 const CitiesContext = ({ children }) => {
+  const { setAddListingLoader } = useContext(ShareStatesCont);
   const [newRenderCities, setNewRenderCities] = useState(null);
   const [CitiesData, setCitiesData] = useState([]);
   const [CitiesLoader, setCitiesLoader] = useState(true);
@@ -16,7 +18,9 @@ const CitiesContext = ({ children }) => {
         setCitiesLoader(false);
       })
       .catch((error) => {})
-      .finally(() => {});
+      .finally(() => {
+        setAddListingLoader(false)
+      });
   }, [newRenderCities]);
 
   return (

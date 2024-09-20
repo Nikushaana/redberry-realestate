@@ -11,16 +11,13 @@ import PropertyCard from "../cards/PropertyCard";
 
 export default function Slider1({ title, data }) {
   let swiperRef = useRef();
-  // const [loader, setLoader] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-[20px]">
       <h1 className="text-[32px] text-defblack">{title}</h1>
 
       <div className="flex w-full gap-8">
-        {false ? (
-          <p>loader</p>
-        ) : (
+        
           <div className="w-full relative">
             {data?.length > 4 && (
               <button
@@ -69,7 +66,6 @@ export default function Slider1({ title, data }) {
               ))}
             </Swiper>
           </div>
-        )}
       </div>
     </div>
   );

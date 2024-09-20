@@ -8,9 +8,9 @@ import { Link } from "react-router-dom";
 export default function PropertyCard({ item }) {
   return (
     <div className="relative w-full rounded-[14px] overflow-hidden border-[1px] border-defaultBg ">
-      <p className="absolute top-[20px] left-[20px] rounded-[15px] text-[12px] text-white bg-defTranspblack w-[90px] h-[26px] flex items-center justify-center">
-        {item?.is_rental === 1 ? "იყიდება" : "ქირავდება"}
-      </p>
+      <div className="absolute top-[20px] left-[20px] rounded-[15px] text-[12px] text-white bg-defTranspblack w-[90px] h-[26px] flex items-center justify-center">
+        <h1>{item?.is_rental === 1 ? "იყიდება" : "ქირავდება"}</h1>
+      </div>
       <Link
         to={`/real-estate/${item?.id}`}
         onClick={() => {
