@@ -1,22 +1,95 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import DropDownButton from "../buttons/dropDownButton";
-import check from "../../images/Vector (3).png";
-import Input1 from "../inputs/Input1";
+import RegionDrop from "./regionDrop/regionDrop";
+import Button3 from "../buttons/button3";
+import FromtoDrop from "./fromtoDrop/fromtoDrop";
+import { ShareStatesCont } from "../contexts/sharedStates";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-export default function FilterDropDown({ text, placeholder, data1, data2 }) {
+export default function FilterDropDown({ text, valuesForQuery, settAllValue }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { priceData, m2Data } = useContext(ShareStatesCont);
   const targetRef = useRef(null);
   const [dropDown, setDropDown] = useState(false);
 
-  const [value1, setValue1] = useState("");
-  const [value2, setValue2] = useState("");
+  const handleFilter = () => {
+    setDropDown(false);
+    const params = new URLSearchParams(searchParams);
+
+    if (valuesForQuery?.region?.length > 0) {
+      params.set("region", valuesForQuery?.region);
+    } else if (text === "რეგიონი") {
+      params.set("region", "");
+    } else {
+      params.set("region", "");
+    }
+    if (valuesForQuery?.prices?.min) {
+      params.set("minPrice", valuesForQuery?.prices?.min);
+    } else if (text === "საფასო კატეგორია") {
+      params.set("minPrice", "");
+    } else {
+      params.set("minPrice", "");
+    }
+    if (valuesForQuery?.prices?.max) {
+      params.set("maxPrice", valuesForQuery?.prices?.max);
+    } else if (text === "საფასო კატეგორია") {
+      params.set("maxPrice", "");
+    } else {
+      params.set("maxPrice", "");
+    }
+    if (valuesForQuery?.areas?.min) {
+      params.set("minArea", valuesForQuery?.areas?.min);
+    } else if (text === "ფართობი") {
+      params.set("minArea", "");
+    } else {
+      params.set("minArea", "");
+    }
+    if (valuesForQuery?.areas?.max) {
+      params.set("maxArea", valuesForQuery?.areas?.max);
+    } else if (text === "ფართობი") {
+      params.set("maxArea", "");
+    } else {
+      params.set("maxArea", "");
+    }
+    if (valuesForQuery?.bedrooms) {
+      params.set("bedrooms", valuesForQuery?.bedrooms);
+    } else if (text === "საძინებლის რაოდენობა") {
+      params.set("bedrooms", "");
+    } else {
+      params.set("bedrooms", "");
+    }
+
+    if (
+      (text === "საფასო კატეგორია" &&
+        parseInt(valuesForQuery?.prices?.min) >
+          parseInt(valuesForQuery?.prices?.max)) ||
+      (text === "ფართობი" &&
+        parseInt(valuesForQuery?.areas?.min) >
+          parseInt(valuesForQuery?.areas?.max))
+    ) {
+    } else {
+      navigate({
+        pathname: "/",
+        search: `?${params.toString()}`,
+      });
+    }
+  };
 
   const handleInputChange = (event) => {
-    let newText = event.target.value;
+    let newValue = event.target.value;
 
-    newText = newText.replace(/[^0-9]/g, "");
+    newValue = newValue?.replace(/[^0-9]/g, "");
 
-    setValue1(newText);
+    settAllValue((prev) => ({ ...prev, bedrooms: newValue }));
   };
+
+  useEffect(() => {
+    settAllValue((prev) => ({
+      ...prev,
+      bedrooms: searchParams.get("bedrooms"),
+    }));
+  }, [searchParams, settAllValue, text]);
 
   const handleClickOutside = (event) => {
     if (targetRef.current && !targetRef.current.contains(event.target)) {
@@ -32,178 +105,65 @@ export default function FilterDropDown({ text, placeholder, data1, data2 }) {
   }, []);
 
   return (
-    <div ref={targetRef} className="relative">
+    <div ref={targetRef} className="relative ">
       <DropDownButton
         text={text}
         dropDown={dropDown}
+        isH1={true}
         setDropDown={setDropDown}
         style={`flex items-center gap-[4px] px-[14px] py-[8px] rounded-[6px] cursor-pointer duration-100 ${
           dropDown ? "bg-defFltrAct" : ""
         }`}
       />
       <div
-        className={`border-[1px] border-defaultBg rounded-[10px] p-[24px] bg-white absolute left-[-6px] duration-200 flex flex-col items-end gap-y-[32px] ${
+        className={`border-[1px] border-defaultBg rounded-[10px] p-[24px] bg-white absolute left-[-6px] duration-150 flex flex-col items-end gap-y-[32px] ${
           dropDown
             ? "top-[50px] opacity-1 z-[2]"
             : "top-[30px] opacity-0 z-[-2]"
         }`}
       >
-        {text === "რეგიონი" && (
-          <div className="flex flex-col gap-y-[24px] w-[730px]">
-            <h1>რეგიონის მიხედვით</h1>
-            <div className="w-full grid grid-cols-3 gap-[50px] gap-y-[20px]">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-[8px] cursor-pointer"
-                >
-                  <div
-                    className={`w-[20px] h-[20px] text-white flex items-center justify-center border-[1px] ${
-                      true ? "bg-defGreen border-white" : " border-defGray"
-                    }`}
-                  >
-                    <img
-                      className="w-[60%] h-[60%] object-contain"
-                      src={check}
-                      alt="img"
-                    />
-                  </div>
-                  <h1 className="text-[14px]">ქართლი</h1>
-                </div>
-              ))}
-            </div>
-          </div>
+        {text === "რეგიონი" && <RegionDrop setallFilterValue={settAllValue} />}
+
+        {text === "საფასო კატეგორია" && (
+          <FromtoDrop
+            text={text}
+            setallFilterValue={settAllValue}
+            name="prices"
+            data1={priceData}
+            data2={priceData}
+          />
         )}
-        {(text === "საფასო კატეგორია" || text === "ფართობი") && (
-          <div className="flex flex-col gap-y-[24px] w-[382px]">
-            <h1 className="">
-              {text === "საფასო კატეგორია"
-                ? "ფასის მიხედვით"
-                : text === "ფართობი" && "ფართობის მიხედვით"}
-            </h1>
-            <div className="grid grid-cols-2 gap-[20px]">
-              <Input1
-                placeholder="დან"
-                digit={true}
-                isError={false}
-                showUnderText={false}
-                firstValue={value1}
-                height="h-[42px]"
-                lastIcon={
-                  text === "საფასო კატეგორია" ? (
-                    <p className="text-[12px]">₾</p>
-                  ) : (
-                    text === "ფართობი" && <p className="">მ²</p>
-                  )
-                }
-              />
-              <Input1
-                placeholder="მდე"
-                digit={true}
-                isError={false}
-                showUnderText={false}
-                firstValue={value2}
-                height="h-[42px]"
-                lastIcon={
-                  text === "საფასო კატეგორია" ? (
-                    <p className="text-[12px]">₾</p>
-                  ) : (
-                    text === "ფართობი" && <p className="">მ²</p>
-                  )
-                }
-              />
-            </div>
-            <div
-              className={`grid grid-cols-2 gap-[20px] ${
-                placeholder === "ფასი" || placeholder === "გარბენი"
-                  ? "h-[calc(100%-70px)]"
-                  : "h-[calc(100%-40px)]"
-              }`}
-            >
-              <div className="flex flex-col gap-y-[16px]">
-                <h1 className="text-[14px]">
-                  {text === "საფასო კატეგორია"
-                    ? "მინ. ფასი"
-                    : text === "ფართობი" && "მინ. მ²"}
-                </h1>
-                <div className="">
-                  {data1?.map((item) => (
-                    <p
-                      key={item.id}
-                      onClick={() => {
-                        setValue1(value1 === item.name ? "" : item.name);
-                      }}
-                      className={`flex items-center w-full text-[14px] 
-                        truncate cursor-pointer duration-100 select-none 
-              ${
-                item.name === value1 ? "font-semibold" : "hover:font-semibold"
-              }`}
-                    >
-                      {item.name}{" "}
-                      {text === "საფასო კატეგორია"
-                        ? "₾"
-                        : text === "ფართობი" && "მ²"}
-                    </p>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col gap-y-[16px]">
-                <h1 className="text-[14px]">
-                  {text === "საფასო კატეგორია"
-                    ? "მაქს. ფასი"
-                    : text === "ფართობი" && "მაქს. მ²"}
-                </h1>
-                <div className="">
-                  {data2?.map((item) => (
-                    <p
-                      key={item.id}
-                      onClick={() => {
-                        setValue2(value2 === item.name ? "" : item.name);
-                      }}
-                      className={`flex items-center w-full text-[14px] 
-                        truncate cursor-pointer duration select-none 
-              ${
-                item.name === value2 ? "font-semibold" : "hover:font-semibold"
-              }`}
-                    >
-                      {item.name}{" "}
-                      {text === "საფასო კატეგორია"
-                        ? "₾"
-                        : text === "ფართობი" && "მ²"}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+        {text === "ფართობი" && (
+          <FromtoDrop
+            text={text}
+            setallFilterValue={settAllValue}
+            name="areas"
+            data1={m2Data}
+            data2={m2Data}
+          />
         )}
         {text === "საძინებლის რაოდენობა" && (
           <div className="flex flex-col items-start gap-y-[24px]">
-            <h1>საძინებლის რაოდენობა</h1>
+            <h1 className="text-defblack">საძინებლის რაოდენობა</h1>
             <div
               className={`rounded-[6px] flex p-[10px] border-[1px] border-defGray items-center h-[40px] w-[40px]
              duration-100`}
             >
               <input
                 onChange={handleInputChange}
-                value={value1}
+                value={valuesForQuery.bedrooms}
                 type="text"
-                // name={name}
-                placeholder={placeholder}
                 className={`select-none outline-none h-full w-full bg-transparent`}
               />
             </div>
           </div>
         )}
-        <div
-          onClick={() => {
-            setDropDown((pre) => !pre);
+
+        <Button3
+          setAction={() => {
+            handleFilter();
           }}
-          className={`flex items-center justify-center gap-[2px] cursor-pointer h-[33px] px-[16px] text-[14px] rounded-[10px] bg-defOrng active:bg-defOrngHvr text-white
-          `}
-        >
-          <p>არჩევა</p>
-        </div>
+        />
       </div>
     </div>
   );

@@ -4,12 +4,25 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ShareStatesChild } from "./components/contexts/sharedStates";
+import RegionsContext from "./components/contexts/regionsCont";
+import CitiesContext from "./components/contexts/citiesCont";
+import AgentsContext from "./components/contexts/agentsCont";
+import RealEstateContext from "./components/contexts/realEstateCont";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <ShareStatesChild>
-      <App />
+      <RegionsContext>
+        <CitiesContext>
+          <AgentsContext>
+            <RealEstateContext>
+              <App />
+            </RealEstateContext>
+          </AgentsContext>
+        </CitiesContext>
+      </RegionsContext>
     </ShareStatesChild>
   </React.StrictMode>
 );

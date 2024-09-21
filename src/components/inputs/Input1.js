@@ -15,19 +15,21 @@ export default function Input1({
   lastIcon,
   height,
   isError,
-  showUnderText,
+  underText,
 }) {
-  const [inputText, setInputText] = useState();
+  const [inputText, setInputText] = useState("");
 
   useEffect(() => {
     if (setAllValues) {
       setAllValues((prev) => ({ ...prev, [name]: inputText }));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputText]);
 
   useEffect(() => {
-    setInputText(firstValue);
+    if (firstValue) {
+      setInputText(firstValue);
+    }
   }, [firstValue]);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function Input1({
 
     if (isNumber) {
       newText = newText
-        .replace(/[^0-9]/g, "")
+        ?.replace(/[^0-9]/g, "")
         .replace(/\s/g, "")
         .replace(/(.{3})/g, "$1 ")
         .trim()
@@ -49,20 +51,20 @@ export default function Input1({
     }
 
     if (digit) {
-      newText = newText.replace(/[^0-9]/g, "");
+      newText = newText?.replace(/[^0-9]/g, "");
     }
 
     setInputText(newText);
   };
 
   return (
-    <div className="flex flex-col gap-y-[4px] ">
-      {title && <h1 className="text-[14px]">{title}</h1>}
+    <div className="flex flex-col gap-y-[5px] ">
+      {title && <h1 className="text-[14px] text-defblack">{title}</h1>}
       <div
-        className={`rounded-[6px] w-full border-[1px] outline-none p-[10px] flex items-center
+        className={`rounded-[6px] w-full border-[1px] outline-none px-[10px] flex items-center
          gap-[10px] duration-100 ${height} ${
-           isError ? " border-defOrng" : " border-defGray"
-         }`}
+          isError ? " border-defOrng" : " border-defGray"
+        }`}
       >
         <input
           onChange={handleInputChange}
@@ -70,26 +72,32 @@ export default function Input1({
           type="text"
           name={name}
           placeholder={placeholder}
-          className={`select-none outline-none h-[90%] w-full bg-transparent`}
+          className={`select-none outline-none h-[95%] w-full `}
         />
         {lastIcon && lastIcon}
       </div>
-      {showUnderText && (
-        <div
-          className={`flex items-center gap-[7px] ${
-            inputText ? isError ? "text-defOrng" : "text-defGreen" : "text-defblack"
-          }`}
-        >
-          <img className={``} src={inputText ? isError ? checkred : checkgreen : checkdef} alt="ing" />{" "}
-          <p className={`text-[14px]`}>
-            {inputText
-              ? isError
-                ? "ჩაწერეთ ვალიდური მონაცემი"
-                : showUnderText
-              : showUnderText}
-          </p>
-        </div>
-      )}
+      <div
+        className={`flex items-center gap-[7px] ${
+          isError
+            ? "text-defOrng"
+            : inputText
+            ? "text-defGreen"
+            : "text-defblack"
+        }`}
+      >
+        <img
+          className={``}
+          src={isError ? checkred : inputText ? checkgreen : checkdef}
+          alt="ing"
+        />{" "}
+        <p className={`text-[14px]`}>
+          {isError
+            ? "ჩაწერეთ ვალიდური მონაცემი"
+            : inputText
+            ? underText
+            : underText}
+        </p>
+      </div>
     </div>
   );
 }

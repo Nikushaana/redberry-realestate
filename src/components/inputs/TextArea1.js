@@ -12,10 +12,9 @@ export default function TextArea1({
   setAllValues,
   isNumber,
   digit,
-  lastIcon,
   height,
   isError,
-  showUnderText,
+  UnderText,
 }) {
   const [inputText, setInputText] = useState();
 
@@ -24,12 +23,13 @@ export default function TextArea1({
       setAllValues((prev) => ({ ...prev, [name]: inputText }));
     }
 
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputText]);
 
   useEffect(() => {
-    setInputText(firstValue);
+    if (firstValue) {
+      setInputText(firstValue);
+    }
   }, [firstValue]);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function TextArea1({
 
     if (isNumber) {
       newText = newText
-        .replace(/[^0-9]/g, "")
+        ?.replace(/[^0-9]/g, "")
         .replace(/\s/g, "")
         .replace(/(.{3})/g, "$1 ")
         .trim()
@@ -51,7 +51,7 @@ export default function TextArea1({
     }
 
     if (digit) {
-      newText = newText.replace(/[^0-9]/g, "");
+      newText = newText?.replace(/[^0-9]/g, "");
     }
 
     setInputText(newText);
@@ -75,19 +75,27 @@ export default function TextArea1({
           className={`select-none outline-none ${height} w-full bg-transparent`}
         />
       </div>
-      {showUnderText && (
+      {UnderText && (
         <div
           className={`flex items-center gap-[7px] ${
-            inputText ? isError ? "text-defOrng" : "text-defGreen" : "text-defblack"
+            isError
+              ? "text-defOrng"
+              : inputText
+              ? "text-defGreen"
+              : "text-defblack"
           }`}
         >
-          <img className={``} src={inputText ? isError ? checkred : checkgreen : checkdef} alt="ing" />{" "}
+          <img
+            className={``}
+            src={isError ? checkred : inputText ? checkgreen : checkdef}
+            alt="ing"
+          />{" "}
           <p className={`text-[14px]`}>
-            {inputText
-              ? isError
-                ? "ჩაწერეთ ვალიდური მონაცემი"
-                : showUnderText
-              : showUnderText}
+            {isError
+              ? "ჩაწერეთ ვალიდური მონაცემი"
+              : inputText
+              ? UnderText
+              : UnderText}
           </p>
         </div>
       )}

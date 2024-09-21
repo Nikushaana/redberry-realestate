@@ -3,10 +3,19 @@ import React, { createContext, useState } from "react";
 export const ShareStatesCont = createContext(null);
 
 export function ShareStatesChild({ children }) {
-  const [delListPopUp, setDelListPopUp] = useState(false);
-  const [addAgentPopUp, setAddAgentPopUp] = useState(false);
+  const [delListPopUp, setDelListPopUp] = useState("");
 
-  const priceData = ([
+  const [addListingLoader, setAddListingLoader] = useState(false);
+
+  const [addAgentPopUp, setAddAgentPopUp] = useState(false);
+  const handleAddAgentPopUp = () => {
+    if (addAgentPopUp) {
+      setAddAgentPopUp(false);
+    } else {
+      setAddAgentPopUp(true);
+    }
+  };
+  const priceData = [
     {
       id: 1,
       name: "50000",
@@ -27,8 +36,8 @@ export function ShareStatesChild({ children }) {
       id: 5,
       name: "300000",
     },
-  ]);
-  const m2Data = ([
+  ];
+  const m2Data = [
     {
       id: 1,
       name: "50",
@@ -49,13 +58,17 @@ export function ShareStatesChild({ children }) {
       id: 5,
       name: "300",
     },
-  ]);
+  ];
 
   const ShareStatesValue = {
     delListPopUp,
     setDelListPopUp,
     addAgentPopUp,
     setAddAgentPopUp,
+    handleAddAgentPopUp,
+
+    addListingLoader,
+    setAddListingLoader,
 
     priceData,
     m2Data,

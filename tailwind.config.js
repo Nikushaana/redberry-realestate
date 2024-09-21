@@ -22,6 +22,9 @@ module.exports = {
         'defFltrAct': '#F3F3F3',
         'defGreen': '#45A849',
         'defblack': '#021526',
+        'defTranspblack': '#02152680',
+        'defTranspblackText': '##021526B2',
+
 
       },
     },
