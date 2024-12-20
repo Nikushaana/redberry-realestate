@@ -196,7 +196,7 @@ export default function AddListing() {
       formData.append("description", addListingValues.description);
       const imageFile = Base64ToFile(
         addListingValues.image,
-        "listing_image.jpg"
+        "listing_image.jpg" 
       );
       formData.append("image", imageFile);
       formData.append(

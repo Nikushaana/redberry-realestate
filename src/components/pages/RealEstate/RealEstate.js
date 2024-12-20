@@ -46,7 +46,7 @@ export default function RealEstate() {
   }, [RealEstateData, oneRealEstateData]);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString); // Create a Date object
+    const date = new Date(dateString); 
     const day = String(date.getDate()).padStart(2, "0"); // Add leading zero if needed
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
     const year = String(date.getFullYear()).slice(-2); // Get last two digits of year
